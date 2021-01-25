@@ -8,7 +8,7 @@
             lazy-validation
         >
             <v-text-field
-            v-model="name"
+            v-model="user.firstName"
             :counter="10"
             :rules="nameRules"
             label="Nombre"
@@ -32,7 +32,7 @@
             ></v-text-field>
 
             <v-text-field
-            v-model="age"
+            v-model="user.age"
             :counter="10"
             :rules="ageRules"
             @keypress="isNumber($event)"
@@ -41,7 +41,7 @@
             ></v-text-field>
 
             <v-text-field
-            v-model="phone"
+            v-model="user.phone"
             :counter="10"
             :rules="phoneRules"
             @keypress="isNumber($event)"
@@ -50,7 +50,7 @@
             ></v-text-field>
 
             <v-text-field
-            v-model="address"
+            v-model="user.address"
             :counter="10"
             :rules="nameRules"
             label="Dirección"
@@ -58,7 +58,7 @@
             ></v-text-field>
 
             <v-select
-            v-model="select"
+            v-model="user.eps"
             :items="items"
             :rules="[v => !!v || 'Item is required']"
             label="EPS"
@@ -94,17 +94,23 @@
     </v-container>
 </template>
 <script>
-  export default {
+import axios from 'axios';
+
+export default {
     name:'RegisterForm',
     data: () => ({
         valid: true,
-
-        name: '',
-        firsLastname: '',
-        secondLastname: '',
-        age:null,
-        phone:null,
-
+        firstLastname: '',
+        secondLastname:'',
+        user: {
+            id:-3,
+            firstName: '',
+            lastName: '',
+            address:'',
+            age:null,
+            phone:null,
+            eps:null,
+        },
 
         nameRules: [
             v => !!v || 'Name is required',
@@ -118,8 +124,6 @@
             v => !!v || 'Phone number is required',
             v => (v && v.length <= 15) || 'Phone number must be less than 15 digits',
         ],
-
-        select: null,
         items: [
             'Item 1',
             'Item 2',
@@ -127,6 +131,7 @@
             'Item 4',
         ],
         checkbox: false,
+
     }),
 
     methods: {
@@ -140,12 +145,30 @@
             }
         },
 
-      validate () {
-        this.$refs.form.validate()
-      },
-      reset () {
-        this.$refs.form.reset()
-      },
+        validate () {
+            this.$refs.form.validate()
+            this.register()
+        },
+        reset () {
+            this.$refs.form.reset()
+        },
+
+        setUser (pUser) {
+            pUser.lastName = this.firstLastname +' '+this.secondLastname;
+            return pUser
+        },
+
+        register(){
+            this.setUser(this.user)
+            axios.post('http://localhost:3000/api/user/register',this.user)
+            .then((response) => {
+                console.log(response.data)
+                return response.data
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        }
 
     },
   }
