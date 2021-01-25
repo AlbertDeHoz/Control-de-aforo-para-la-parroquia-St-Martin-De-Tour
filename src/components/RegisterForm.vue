@@ -103,7 +103,7 @@ export default {
         firstLastname: '',
         secondLastname:'',
         user: {
-            id:-3,
+            id:-4,
             firstName: '',
             lastName: '',
             address:'',
@@ -163,6 +163,7 @@ export default {
             axios.post('http://localhost:3000/api/user/register',this.user)
             .then((response) => {
                 console.log(response.data)
+                this.$router.push('/question')
                 return response.data
             })
             .catch((error) => {

@@ -7,7 +7,7 @@
         lazy-validation
       >
       <v-select
-        v-model="select"
+        v-model="user.type"
         :items="items"
         :rules="[v => !!v || 'Item is required']"
         label="Item"
@@ -15,7 +15,7 @@
       ></v-select>
 
       <v-text-field
-        v-model="email"
+        v-model="user.id"
         :rules="idRules"
         label="Cédula"
         @keypress="isNumber($event)"
@@ -51,18 +51,23 @@
 </template>
 
 <script>
+import axios from 'axios';
+
   export default {
     name:'HomeForm',
     data: () => ({
       valid: true,
-     
-      id: '',
+
+      user:{
+        id:'',
+        type: null
+      },
+
       idRules: [
         v => !!v || 'Id is required',
         v => (v && v.length >= 5) || 'Name must be more than 4 characters'
         //v => /.+@.+\..+/.test(v) || 'id must be valid',
       ],
-      select: null,
       items: [
         'Item 1',
         'Item 2',
@@ -84,11 +89,28 @@
       },
 
       validate () {
-        this.$refs.form.validate()
+        this.$refs.form.validate();
+        this.verify();
+
       },
       reset () {
         this.$refs.form.reset()
       },
+      
+      verify() {
+        axios.post('http://localhost:3000/api/user/signin',this.user)
+        .then((response) =>{
+          console.log(response.data)
+          if (response){
+            this.$router.push('/question')
+          }
+        })
+        .catch((error)=>{
+          console.log(error)
+          this.$router.push('/register')
+        }) 
+        
+      }
 
     },
   }
