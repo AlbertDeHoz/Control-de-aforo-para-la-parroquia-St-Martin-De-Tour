@@ -3,7 +3,7 @@
     <img alt="Vue logo" src="../assets/logo.png">
     <HomeForm msg="Welcome to Your Vue.js App"/>
     <div class="store">{{title}}</div>
-    <div class="store">{{user}}</div>
+    <pre>{{userId}}</pre>
   </div>
 </template>
 
@@ -11,6 +11,7 @@
 // @ is an alias to /src
 import HomeForm from '@/components/HomeForm.vue'
 import {mapGetters} from 'vuex';
+import {mapActions} from 'vuex';
 
 export default {
   name: 'Home',
@@ -19,8 +20,21 @@ export default {
   },
   computed: {
     ...mapGetters(
-      ['title','user']
+      ['title','userId']
       )
+  },
+  mounted() {
+    //let i = 0
+    //setInterval(() =>{
+    //  this.GET_USERNAME(i % 3);//i repetir 3 veces
+    //  i++
+    //},1000)
+    this.GET_USERID(null)
+  },
+  methods: {
+    ...mapActions([
+      'GET_USERID'
+    ]),
   }
 }
 </script>

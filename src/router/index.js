@@ -6,6 +6,10 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path:'*',
+    redirect:'/'
+  },
+  {
     path: '/',
     name: 'Home',
     component: Home
@@ -21,12 +25,32 @@ const routes = [
   {
     path: '/question',
     name: 'Question',
-    component: () => import(/* webpackChunkName: "question" */ '../views/Question.vue') 
+    component: () => import(/* webpackChunkName: "question" */ '../views/Question.vue'),
+    meta:{
+      auth: true
+    }
   }
 ]
 
 const router = new VueRouter({
+  mode:'history',
   routes
 })
+router.beforeEach((to,from,next) => {
+  let user = true; //emulación usuario inexistente
+  let authorization =  to.matched.some(record => record.meta.auth);
+  if (!user && authorization){//requiere autorización pero usuario no existe
+    next('/');
+  } else if (user && !authorization){// //no requiere autorización pero usuario existe
+    next('/question')
+  }else next()
+
+})
+
+//router.beforeEach((to, from, next) => {
+//  if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' })
+//  else next()
+//})
+
 
 export default router

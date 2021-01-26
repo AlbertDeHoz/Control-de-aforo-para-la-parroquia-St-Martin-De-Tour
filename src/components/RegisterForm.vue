@@ -90,11 +90,13 @@
             </v-btn>
 
         </v-form>
+        <pre>{{userId}}</pre>
     </v-app>
     </v-container>
 </template>
 <script>
 import axios from 'axios';
+import {mapGetters} from 'vuex';
 
 export default {
     name:'RegisterForm',
@@ -103,7 +105,7 @@ export default {
         firstLastname: '',
         secondLastname:'',
         user: {
-            id:-4,
+            id:null,
             firstName: '',
             lastName: '',
             address:'',
@@ -133,7 +135,11 @@ export default {
         checkbox: false,
 
     }),
-
+      computed: {
+    ...mapGetters(
+      ['userId']
+    )
+  },
     methods: {
         isNumber: function(evt) {
             evt = (evt) ? evt : window.event;
@@ -154,6 +160,7 @@ export default {
         },
 
         setUser (pUser) {
+            pUser.id = this.userId
             pUser.lastName = this.firstLastname +' '+this.secondLastname;
             return pUser
         },

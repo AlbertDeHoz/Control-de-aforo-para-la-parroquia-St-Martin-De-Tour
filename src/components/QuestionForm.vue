@@ -1,7 +1,8 @@
 <template>
     <v-app>
         <h2>*Preguntas de autoevaluación COVID-19* </h2>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus culpa veritatis nostrum soluta nesciunt aperiam beatae praesentium doloribus laboriosam excepturi?</p>
+        <p>Debe responder "NO" a todas las preguntas de este cuestionario para ingresar a nuestra ubicación física. Si responde "SÍ" a alguna de las preguntas, NO entre los edificios de la empresa y notifique a su superior inmediato.
+        <br/>Si experimenta algún síntoma o responde "SÍ" a cualquiera de estas preguntas, debe comunicarse de inmediato con su profesional de la salud para conocer los próximos pasos recomendados y notificar a su gerente y Recursos Humanos.</p>
         
         
         <p>Responder _si_ o _no_ a las siguientes preguntas:</p>
@@ -40,23 +41,29 @@
         <pre>{{answers}}</pre>
         <pre>{{answers.length}}</pre>
         <pre>{{questions.length}}</pre>
+        <pre>{{userId}}</pre>
     </v-app>
 </template>
 
 <script>
 import axios from 'axios';
+import {mapGetters} from 'vuex';
 
 export default {
 
     name: 'QuestionForm',
     data: () => ({
         valid:true,
-        preguntas:[],
         questions:[],
         answers: new Array(() => this.questions.length)
     }),
     created(){
         this.listQuestion();
+    },
+    computed: {
+        ...mapGetters([
+            "userId"
+        ])
     },
     methods: {
         validate () {

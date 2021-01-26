@@ -52,6 +52,7 @@
 
 <script>
 import axios from 'axios';
+import {mapActions} from 'vuex';
 
   export default {
     name:'HomeForm',
@@ -78,6 +79,9 @@ import axios from 'axios';
     }),
 
     methods: {
+      ...mapActions([
+        'GET_USERID'
+      ]),
       isNumber: function(evt) {
         evt = (evt) ? evt : window.event;
         var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -98,6 +102,7 @@ import axios from 'axios';
       },
       
       verify() {
+        this.GET_USERID(this.user.id)
         axios.post('http://localhost:3000/api/user/signin',this.user)
         .then((response) =>{
           console.log(response.data)
