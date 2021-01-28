@@ -80,7 +80,7 @@ import {mapActions} from 'vuex';
 
     methods: {
       ...mapActions([
-        'GET_USERID'
+        'GET_USERID','KEEP_USERTOKEN'
       ]),
       isNumber: function(evt) {
         evt = (evt) ? evt : window.event;
@@ -107,6 +107,7 @@ import {mapActions} from 'vuex';
         .then((response) =>{
           console.log(response.data)
           if (response){
+            this.KEEP_USERTOKEN(response.data)
             this.$router.push('/question')
           }
         })

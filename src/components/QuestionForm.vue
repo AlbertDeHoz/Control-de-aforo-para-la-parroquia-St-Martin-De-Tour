@@ -12,9 +12,9 @@
         lazy-validation
         >
             <v-radio-group 
-            v-for="(question,n) in questions"
-            v-model="answers[`${n}`]"
-            :key="n"
+            v-for="(question,id) in questions"
+            v-model="answers[`${question.id-1}`]"
+            :key=id
             required
             :rules="[v => !!v || 'You must choise a option to continue!']"
             >
@@ -30,17 +30,16 @@
                 ></v-radio>
             </v-radio-group>
             <v-btn
+            v-if="isUserAbleToSend"
             :disabled="!valid"
             color="success"
             class="mr-4"
             @click="validate"
             >
-                Validate
+                Enviar
             </v-btn>
         </v-form>
         <pre>{{answers}}</pre>
-        <pre>{{answers.length}}</pre>
-        <pre>{{questions.length}}</pre>
         <pre>{{userId}}</pre>
     </v-app>
 </template>
@@ -55,19 +54,21 @@ export default {
     data: () => ({
         valid:true,
         questions:[],
-        answers: new Array(() => this.questions.length)
+        answers: new Array()
     }),
-    created(){
+    mounted(){
         this.listQuestion();
     },
     computed: {
         ...mapGetters([
-            "userId"
+            "userId","token","isUserAbleToSend"
         ])
     },
+
     methods: {
         validate () {
             this.$refs.form.validate()
+            this.setEnable()
         },
         listQuestion () {
             axios
@@ -76,6 +77,21 @@ export default {
                 this.questions = response.data;
                 console.log(this.questions)
             })
+        },
+        setEnable() { //Quelque réponse est affirmative?
+            const response = this.answers.find(element => element === 'si')?false:true
+            if (response) {
+                console.log('here')
+                axios
+                .put('http://localhost:3000/api/user/enable',{id:this.$store.state.userId})
+                .then( (res) => res.data)
+                .catch(error => console.log(error))
+            }else(
+                axios
+                .put('http://localhost:3000/api/user/disable',{id:this.$store.state.userId})
+                .then( res => res.data)
+                .catch(error => console.log(error))
+            )
         }
     }
 }
