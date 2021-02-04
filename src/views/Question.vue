@@ -1,8 +1,8 @@
 <template>
     <v-container>
-        <question-form/>
-        <user-disabled v-if="!userEnabled"/>
+        <user-disabled v-if="userEnabled===false"/>
         <user-enabled v-if="userEnabled"/>
+        <question-form v-if="userEnabled === null"/>
         <pre>{{userEnabled}}</pre>
     </v-container>
 </template>
@@ -24,7 +24,8 @@ export default {
     computed: {
         ...mapGetters(
             ['userEnabled']
-        )
-    }
+        ),
+    },
+
 }
 </script>

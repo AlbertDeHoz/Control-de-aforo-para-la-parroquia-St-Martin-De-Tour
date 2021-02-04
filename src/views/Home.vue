@@ -23,11 +23,11 @@ export default {
       )
   },
   mounted() {
-    this.GET_USERID(null)
+    //this.KEEP_USERID(null)
   },
   methods: {
     ...mapActions([
-      'GET_USERID'
+      'KEEP_USERID'
     ]),
   }
 }

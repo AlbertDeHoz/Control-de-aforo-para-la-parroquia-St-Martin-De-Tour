@@ -8,7 +8,7 @@
       >
       <v-select
         v-model="user.type"
-        :items="items"
+        :items="values"
         :rules="[v => !!v || 'Item is required']"
         label="Item"
         required
@@ -47,6 +47,7 @@
       </v-btn>
     </v-form>
   </v-container>
+  <pre>{{values}}</pre>
   </v-app>
 </template>
 
@@ -69,18 +70,17 @@ import {mapActions} from 'vuex';
         v => (v && v.length >= 5) || 'Name must be more than 4 characters'
         //v => /.+@.+\..+/.test(v) || 'id must be valid',
       ],
-      items: [
-        'Item 1',
-        'Item 2',
-        'Item 3',
-        'Item 4',
-      ],
       checkbox: false,
+      values: []
     }),
+
+    created () {
+      this.setIdType()
+    },
 
     methods: {
       ...mapActions([
-        'GET_USERID','KEEP_USERTOKEN'
+        'KEEP_USERID','KEEP_USERTOKEN',
       ]),
       isNumber: function(evt) {
         evt = (evt) ? evt : window.event;
@@ -90,6 +90,15 @@ import {mapActions} from 'vuex';
         } else {
           return true;
         }
+      },
+
+      setIdType () {
+        axios.get('http://localhost:3000/api/type/list')
+        .then( res => res.data)
+        .then( data => data.forEach(element => {
+          this.values.push(element.description)
+        }))
+        .catch( error => console.log(error))
       },
 
       validate () {
@@ -102,12 +111,12 @@ import {mapActions} from 'vuex';
       },
       
       verify() {
-        this.GET_USERID(this.user.id)
+        this.KEEP_USERID(this.user.id)
         axios.post('http://localhost:3000/api/user/signin',this.user)
         .then((response) =>{
           console.log(response.data)
           if (response){
-            this.KEEP_USERTOKEN(response.data)
+            this.KEEP_USERTOKEN(response.data.tokenUser)
             this.$router.push('/question')
           }
         })

@@ -91,6 +91,7 @@
 
         </v-form>
         <pre>{{userId}}</pre>
+        <pre>{{items}}</pre>
     </v-app>
     </v-container>
 </template>
@@ -126,20 +127,19 @@ export default {
             v => !!v || 'Phone number is required',
             v => (v && v.length <= 15) || 'Phone number must be less than 15 digits',
         ],
-        items: [
-            'Item 1',
-            'Item 2',
-            'Item 3',
-            'Item 4',
-        ],
+        items: [],
         checkbox: false,
 
     }),
-      computed: {
-    ...mapGetters(
-      ['userId']
-    )
-  },
+    computed: {
+        ...mapGetters(
+            ['userId']
+        )
+    },
+    created () {
+        this.setItems()
+    },
+
     methods: {
         isNumber: function(evt) {
             evt = (evt) ? evt : window.event;
@@ -149,6 +149,15 @@ export default {
             } else {
             return true;
             }
+        },
+
+        setItems () {
+            axios.get('http://localhost:3000/api/eps/list')
+            .then( res => res.data)
+            .then( data => data.forEach(element => {
+                this.items.push(element.epsName)
+            }))
+            .catch( error => console.log(error))
         },
 
         validate () {

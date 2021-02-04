@@ -30,7 +30,7 @@
                 ></v-radio>
             </v-radio-group>
             <v-btn
-            v-if="isUserAbleToSend"
+            v-if="isAbleToSend"
             :disabled="!valid"
             color="success"
             class="mr-4"
@@ -39,14 +39,12 @@
                 Enviar
             </v-btn>
         </v-form>
-        <pre>{{answers}}</pre>
-        <pre>{{userId}}</pre>
     </v-app>
 </template>
 
 <script>
 import axios from 'axios';
-import {mapGetters} from 'vuex';
+import {mapGetters,mapActions} from 'vuex';
 
 export default {
 
@@ -54,34 +52,38 @@ export default {
     data: () => ({
         valid:true,
         questions:[],
-        answers: new Array()
+        answers: new Array(),
+        isAbleToSend: true,
     }),
     mounted(){
         this.listQuestion();
     },
     computed: {
         ...mapGetters([
-            "userId","token","isUserAbleToSend"
+            "userId","token","userEnabled"
         ])
     },
 
     methods: {
+        ...mapActions(['KEEP_ENABLED']),
         validate () {
             this.$refs.form.validate()
             this.setEnable()
+            console.log(this.userEnabled)
+            this.isAbleToSend = false
         },
         listQuestion () {
             axios
             .get('http://localhost:3000/api/question/list')
             .then((response) => {
                 this.questions = response.data;
-                console.log(this.questions)
+                console.log(this.questions);
             })
         },
         setEnable() { //Quelque réponse est affirmative?
             const response = this.answers.find(element => element === 'si')?false:true
+            this.KEEP_ENABLED(response)
             if (response) {
-                console.log('here')
                 axios
                 .put('http://localhost:3000/api/user/enable',{id:this.$store.state.userId})
                 .then( (res) => res.data)
