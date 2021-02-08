@@ -38,6 +38,7 @@
             >
                 Enviar
             </v-btn>
+            <pre>{{userId}},{{userIdType}}</pre>
         </v-form>
     </v-app>
 </template>
@@ -60,17 +61,18 @@ export default {
     },
     computed: {
         ...mapGetters([
-            "userId","token","userEnabled"
+            "userId","token","userEnabled","userIdType"
         ])
     },
 
     methods: {
         ...mapActions(['KEEP_ENABLED']),
         validate () {
-            this.$refs.form.validate()
-            this.setEnable()
-            console.log(this.userEnabled)
-            this.isAbleToSend = false
+            if(this.$refs.form.validate()){
+                this.setEnable()
+                console.log(this.userEnabled)
+                this.isAbleToSend = false
+            }
         },
         listQuestion () {
             axios
@@ -83,14 +85,15 @@ export default {
         setEnable() { //Quelque réponse est affirmative?
             const response = this.answers.find(element => element === 'si')?false:true
             this.KEEP_ENABLED(response)
+            console.log(this.$store.state.userId)
             if (response) {
                 axios
-                .put('http://localhost:3000/api/user/enable',{id:this.$store.state.userId})
+                .put('http://localhost:3000/api/user/enable',{idNumber:this.$store.state.userId})
                 .then( (res) => res.data)
                 .catch(error => console.log(error))
             }else(
                 axios
-                .put('http://localhost:3000/api/user/disable',{id:this.$store.state.userId})
+                .put('http://localhost:3000/api/user/disable',{idNumber:this.$store.state.userId})
                 .then( res => res.data)
                 .catch(error => console.log(error))
             )

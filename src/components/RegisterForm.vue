@@ -58,7 +58,7 @@
             ></v-text-field>
 
             <v-select
-            v-model="user.eps"
+            v-model="user.EpsName"
             :items="items"
             :rules="[v => !!v || 'Item is required']"
             label="EPS"
@@ -91,7 +91,7 @@
 
         </v-form>
         <pre>{{userId}}</pre>
-        <pre>{{items}}</pre>
+        <pre>{{userIdType}}</pre>
     </v-app>
     </v-container>
 </template>
@@ -106,13 +106,14 @@ export default {
         firstLastname: '',
         secondLastname:'',
         user: {
-            id:null,
+            idNumber:null,
+            idType:null,
             firstName: '',
             lastName: '',
             address:'',
             age:null,
             phone:null,
-            eps:null,
+            EpsName:null,
         },
 
         nameRules: [
@@ -133,7 +134,7 @@ export default {
     }),
     computed: {
         ...mapGetters(
-            ['userId']
+            ['userId','userIdType']
         )
     },
     created () {
@@ -161,21 +162,23 @@ export default {
         },
 
         validate () {
-            this.$refs.form.validate()
-            this.register()
+            this.$refs.form.validate()?this.register():false;
         },
         reset () {
             this.$refs.form.reset()
         },
 
-        setUser (pUser) {
-            pUser.id = this.userId
-            pUser.lastName = this.firstLastname +' '+this.secondLastname;
-            return pUser
+        setUser () {
+            this.user.idNumber = this.userId;
+            this.user.idType = this.userIdType;
+            this.user.lastName = this.firstLastname +' '+this.secondLastname;
+            this.user.firstName = this.user.firstName.toUpperCase();
+            this.user.lastName = this.user.lastName.toUpperCase();
+            this.user.address = this.user.address.toUpperCase();
         },
 
         register(){
-            this.setUser(this.user)
+            this.setUser()
             axios.post('http://localhost:3000/api/user/register',this.user)
             .then((response) => {
                 console.log(response.data)

@@ -7,17 +7,15 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state:{
         token:null,
-        title: 'soy un titulo de vuex',
         userId: -1,
+        userIdType: null,
         userEnabled: null,
-        userSend: null
     },
     getters: {
-        title: state => state.title,
         userId: state => state.userId,
         token: state => state.token,
         userEnabled: state => state.userEnabled,
-        //isUserAbleToSend: state => state.userEnabled===null?true:false  // si el usuario ya envió el formulario, no podrá volverlo a enviar
+        userIdType: state => state.userIdType
     },
     mutations:{
         SET_TOKEN(state, token){
@@ -29,20 +27,24 @@ export default new Vuex.Store({
         SET_ENABLE(state, enable){
             state.userEnabled = enable;
         },
+        SET_USER_IDTYPE(state,userIdType){
+            state.userIdType = userIdType;
+        }
     },
     actions:{
         KEEP_USERTOKEN({commit}, pToken){
             commit('SET_TOKEN',pToken);
             const tokenDecode = jwtDecode(pToken);
-            console.log(tokenDecode)
-            console.log(tokenDecode.enable)
+            console.log(tokenDecode);
+            console.log(tokenDecode.enable);
             commit('SET_ENABLE',tokenDecode.enable);
         },
         KEEP_ENABLED({commit},enable){
-            commit('SET_ENABLE',enable)
+            commit('SET_ENABLE',enable);
         },
         KEEP_USERID({commit}, userId){
-            commit('SET_USERID',userId);
+            commit('SET_USERID',userId.idNumber);
+            commit('SET_USER_IDTYPE',userId.idType)
         },
     },
     

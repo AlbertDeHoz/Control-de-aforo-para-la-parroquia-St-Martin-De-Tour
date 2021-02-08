@@ -10,7 +10,7 @@
 import QuestionForm from '../components/QuestionForm.vue'
 import UserDisabled from '../components/QuestionComplete/UserDisabled'
 import UserEnabled from '../components/QuestionComplete/UserEnabled'
-import {mapGetters} from 'vuex'
+import {mapGetters,mapActions} from 'vuex'
 
 
 export default {
@@ -26,6 +26,12 @@ export default {
             ['userEnabled']
         ),
     },
+    beforeUpdated() {
+        this.KEEP_ENABLED(true)
+    },
+    methods:{
+        ...mapActions(['KEEP_ENABLED'])
+    }
 
 }
 </script>
