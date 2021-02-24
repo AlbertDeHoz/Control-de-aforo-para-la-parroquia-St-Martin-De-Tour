@@ -1,8 +1,7 @@
 <template>
-  <div class="home">
+  <div >
     <img alt="Vue logo" src="../assets/logo.png">
-    <HomeForm msg="Welcome to Your Vue.js App"/>
-    <pre>{{userId}}</pre>
+    <HomeForm  msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
 
@@ -19,7 +18,7 @@ export default {
   },
   computed: {
     ...mapGetters(
-      ['title','userId']
+      ['userId']
       )
   },
   mounted() {
@@ -32,3 +31,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+</style>

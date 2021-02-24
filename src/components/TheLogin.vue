@@ -24,15 +24,15 @@
                     lazy-validation
                 >
                     <v-text-field
-                        v-model="name"
+                        v-model="user.username"
                         :counter="10"
                         :rules="nameRules"
-                        label="Name"
+                        label="Nombre"
                         required
                     ></v-text-field>
 
                     <v-text-field
-                        v-model="password"
+                        v-model="user.password"
                         :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                         :rules="[rules.required, rules.min]"
                         :type="show1 ? 'text' : 'password'"
@@ -67,31 +67,59 @@
 </template>
 
 <script>
-  export default {
+import {mapActions} from 'vuex';
+
+export default {
     data: () => ({
         valid:true,   
         show1: false,
-        name: '',
-        password: '',
+        user: {
+            username: '',
+            password: '',
+        },
         nameRules: [
             v => !!v || 'Name is required',
-            v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+            v => (v && v.length <= 15) || 'Name must be less than 10 characters',
         ],
         rules: {
-                required: value => !!value || 'Required.',
-                min: v => v.length >= 4 || 'Min  characters',
-                emailMatch: () => (`The email and password you entered don't match`),
-            },
+            required: value => !!value || 'Required.',
+            min: v => v.length >= 4 || 'Min  characters',
+            emailMatch: () => (`The email and password you entered don't match`),
+        },
     }),
     methods:{
+        ...mapActions(['KEEP_ROLE_FROM_TOKEN']),
         validate () {
-            this.$refs.form.validate();
+            this.$refs.form.validate()?this.verifyUser():false;
         },
         reset () {
             this.$refs.form.reset()
-            this.name = '',
-            this.password = ''
+            this.user.username = '',
+            this.user.password = ''
         },
+        async verifyUser () {
+            try{
+
+                const response = await fetch('http://localhost:3000/api/admin/login',{
+                    method:'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body:JSON.stringify({
+                        username:this.user.username,
+                        password:this.user.password    
+                    })
+                });
+                const data = await response.json();
+                if(data){
+                    this.KEEP_ROLE_FROM_TOKEN(data.userToken)
+                    this.$router.push('/admin')
+                }
+            }catch(error){
+                console.log(error)
+            }
+        }
     }
-  }
+}
 </script>

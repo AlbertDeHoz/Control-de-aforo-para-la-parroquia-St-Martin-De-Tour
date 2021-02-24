@@ -13,7 +13,7 @@
         >
             <v-radio-group 
             v-for="(question,id) in questions"
-            v-model="answers[`${question.id-1}`]"
+            v-model="answers[question.id-1]"
             :key=id
             required
             :rules="[v => !!v || 'You must choise a option to continue!']"
@@ -79,8 +79,8 @@ export default {
             .get('http://localhost:3000/api/question/list')
             .then((response) => {
                 this.questions = response.data;
-                console.log(this.questions);
             })
+            .catch(error => console.error(error))
         },
         setEnable() { //Quelque réponse est affirmative?
             const response = this.answers.find(element => element === 'si')?false:true

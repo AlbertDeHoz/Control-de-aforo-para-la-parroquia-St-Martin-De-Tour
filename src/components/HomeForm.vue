@@ -1,7 +1,7 @@
-<template>
-  <v-app>
-    <v-container>
-      <v-form
+<template >
+  <v-app >
+    <v-container >
+      <v-form 
         ref="form"
         v-model="valid"
         lazy-validation
@@ -25,7 +25,7 @@
       <v-checkbox
         v-model="checkbox"
         :rules="[v => !!v || 'You must agree to continue!']"
-        label="Do you agree?"
+        label="¿Estás de acuerdo?"
         required
       ></v-checkbox>
 
@@ -34,35 +34,40 @@
         color="success"
         class="mr-4"
         @click="validate"
+        v-if="showSendDate"
       >
-        Validate
+        Enviar
       </v-btn>
 
       <v-btn
         color="error"
         class="mr-4"
         @click="reset"
+        v-if="showSendDate"
       >
-        Reset
+        Limpiar
       </v-btn>
+      <send-date v-if="!showSendDate"/>
     </v-form>
   </v-container>
-  <pre>{{values}}</pre>
   </v-app>
 </template>
 
 <script>
+import SendDate from './SendDate.vue'
 import axios from 'axios';
-import {mapActions} from 'vuex';
+import {mapActions,mapGetters} from 'vuex';
 import Swal from 'sweetalert2'
 
   export default {
     name:'HomeForm',
+    components:{
+      SendDate
+    },
     data: () => ({
-      items: [],
       values: [],
       valid: true,
-      idTypes: null,
+      showSendDate : true,
       user:{
         idNumber:'',
         idType: '',
@@ -75,9 +80,11 @@ import Swal from 'sweetalert2'
       ],
       checkbox: false
     }),
-
+    computed: {
+      ...mapGetters(['userBirth'])
+    },
     created() {
-      this.getIdType ()
+      this.getValues ()
     },
 
     methods: {
@@ -93,8 +100,12 @@ import Swal from 'sweetalert2'
           return true;
         }
       },
-      
-      getIdType () {
+      /**
+       ************ getValues *****************
+       * pide la lista de tipos de identificación por el campo de descripción
+       * 
+       */
+      getValues () {
         axios.get('http://localhost:3000/api/type/list')
         .then( res => res.data)
         .then( data => {
@@ -109,28 +120,44 @@ import Swal from 'sweetalert2'
         this.$refs.form.validate()?this.setIdType():false;
       },
       reset () {
-      this.$refs.form.reset()
+        this.$refs.form.reset()
       },
-
+      /**
+       ******setIdType*********
+       * cambia el valor de user.idType, de descripción a abreviación
+       * pasa el valor de user a KEEP_USERID, es decir, se guarda en la vuex store
+       * se ejecuta el método verify()
+       */
       setIdType(){
         axios.get('http://localhost:3000/api/type/list')
         .then( res => res.data)
         .then(data => {
           const index = this.values.indexOf(this.user.idType);
           const idType = data[index].idType;
-          this.user.idType = idType
+          this.user.idType = idType;
           this.KEEP_USERID(this.user);
           this.verify()
         })
         .catch(error => console.log(error));
       },
+      /**
+       *envia this.user para validar los datos del formulario
+       *redireccina a las preguntas si todo está bien
+       */
       verify() {
         axios.post('http://localhost:3000/api/user/signin',this.user)
-        .then((response) =>{
-          console.log(response.data)
-          if (response){
-            this.KEEP_USERTOKEN(response.data.tokenUser)
-            this.$router.push('/question')
+        .then((response) => response.data)
+        .then(data => {
+          if (data.tokenUser){
+            this.KEEP_USERTOKEN(data.tokenUser)
+            if(this.userBirth===null){
+              console.log('hay que registrar el nacimiento')
+              this.showSendDate = !this.showSendDate
+            }
+            else {
+              console.log('ya está registrado')
+              this.$router.push('/question')
+            }
           }
         })
         .catch((error)=>{
@@ -139,16 +166,15 @@ import Swal from 'sweetalert2'
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
-              text: 'Something went wrong!',
-              footer: 'verify your login credentials'
+              text: 'Parece que hubo un error',
+              footer: 'Por favor verifica tus datos, y vuelve a intentarlo'
             })
-        }else {
-          this.$router.push('/register')
-        }
-        })
-        
+          }else {
+            this.$router.push('/register')
+          }
+        })    
       }
-
     },
   }
 </script>
+

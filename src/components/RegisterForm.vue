@@ -32,15 +32,6 @@
             ></v-text-field>
 
             <v-text-field
-            v-model="user.age"
-            :counter="10"
-            :rules="ageRules"
-            @keypress="isNumber($event)"
-            label="Edad"
-            required
-            ></v-text-field>
-
-            <v-text-field
             v-model="user.phone"
             :counter="10"
             :rules="phoneRules"
@@ -49,6 +40,35 @@
             required
             ></v-text-field>
 
+            <v-menu
+                ref="menu"
+                v-model="menu"
+                :close-on-content-click="false"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+            >
+                <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                    v-model="user.birth"
+                    label="Fecha de nacimiento"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    :rules="dateRules"
+                    v-on="on"
+                ></v-text-field>
+                </template>
+                <v-date-picker
+                ref="picker"
+                v-model="user.birth"
+                max="2015-01-01"
+                min="1900-01-01"
+                @change="save"
+                ></v-date-picker>
+                <!--new Date().toISOString().substr(0, 10)-->
+            </v-menu>
+            <!-- -->
             <v-text-field
             v-model="user.address"
             :counter="10"
@@ -68,7 +88,7 @@
             <v-checkbox
             v-model="checkbox"
             :rules="[v => !!v || 'You must agree to continue!']"
-            label="Do you agree?"
+            label="¿Estás de acuerdo?"
             required
             ></v-checkbox>
 
@@ -78,7 +98,7 @@
             class="mr-4"
             @click="validate"
             >
-            Validate
+            Enviar
             </v-btn>
 
             <v-btn
@@ -86,7 +106,7 @@
             class="mr-4"
             @click="reset"
             >
-            Reset Form
+            Limpiar formulario
             </v-btn>
 
         </v-form>
@@ -102,7 +122,8 @@ import {mapGetters} from 'vuex';
 export default {
     name:'RegisterForm',
     data: () => ({
-        valid: true,
+        valid: true,                
+        menu: false,
         firstLastname: '',
         secondLastname:'',
         user: {
@@ -111,18 +132,17 @@ export default {
             firstName: '',
             lastName: '',
             address:'',
-            age:null,
             phone:null,
             EpsName:null,
+            birth : null,
         },
 
+        dateRules: [
+            v => !!v || 'Esta fecha es requerida.',
+        ],
         nameRules: [
             v => !!v || 'Name is required',
             v => (v && v.length <= 10) || 'Name must be less than 10 characters',
-        ],
-        ageRules: [
-            v => !!v || 'Age is required',
-            v => (v && v.length <= 3) || 'Age must be less than 3 digits',
         ],
         phoneRules: [
             v => !!v || 'Phone number is required',
@@ -140,8 +160,16 @@ export default {
     created () {
         this.setItems()
     },
+    watch: {
+      menu (val) {
+        val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
+      },
+    },
 
     methods: {
+        save (birth) {
+            this.$refs.menu.save(birth)
+        },
         isNumber: function(evt) {
             evt = (evt) ? evt : window.event;
             var charCode = (evt.which) ? evt.which : evt.keyCode;
