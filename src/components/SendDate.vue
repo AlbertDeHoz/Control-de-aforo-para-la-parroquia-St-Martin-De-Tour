@@ -70,7 +70,7 @@
       async verify() {
         this.KEEP_USERBIRTH(this.date)
         try{
-          const response = await fetch('http://localhost:3000/api/user/birth',{
+          const response = await fetch(`${this.$url}/api/user/birth`,{
             method:'PUT',
             headers: {
               'Content-Type': 'application/json'

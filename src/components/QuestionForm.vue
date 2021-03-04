@@ -38,7 +38,6 @@
             >
                 Enviar
             </v-btn>
-            <pre>{{userId}},{{userIdType}}</pre>
         </v-form>
     </v-app>
 </template>
@@ -46,6 +45,7 @@
 <script>
 import axios from 'axios';
 import {mapGetters,mapActions} from 'vuex';
+import Swal from 'sweetalert2';
 
 export default {
 
@@ -61,7 +61,7 @@ export default {
     },
     computed: {
         ...mapGetters([
-            "userId","token","userEnabled","userIdType"
+            "userId","token","userEnabled"
         ])
     },
 
@@ -70,34 +70,48 @@ export default {
         validate () {
             if(this.$refs.form.validate()){
                 this.setEnable()
-                console.log(this.userEnabled)
+                //this.KEEP_ENABLED(this.response)
+                this.KEEP_ENABLED(null)
                 this.isAbleToSend = false
             }
         },
         listQuestion () {
             axios
-            .get('http://localhost:3000/api/question/list')
+            .get(`${this.$url}/api/question/list`)
             .then((response) => {
                 this.questions = response.data;
             })
             .catch(error => console.error(error))
         },
+        
+
         setEnable() { //Quelque réponse est affirmative?
             const response = this.answers.find(element => element === 'si')?false:true
-            this.KEEP_ENABLED(response)
-            console.log(this.$store.state.userId)
-            if (response) {
-                axios
-                .put('http://localhost:3000/api/user/enable',{idNumber:this.$store.state.userId})
-                .then( (res) => res.data)
-                .catch(error => console.log(error))
-            }else(
-                axios
-                .put('http://localhost:3000/api/user/disable',{idNumber:this.$store.state.userId})
-                .then( res => res.data)
-                .catch(error => console.log(error))
-            )
+            const userAptitude = response?'enable':'disable';
+            axios
+            .put(`${this.$url}/api/user/${userAptitude}`,this.userId)
+            .then( (res) => {
+                if (res.data){
+                    this.KEEP_ENABLED(response)
+                }
+            })
+            .catch(error => { 
+                console.log(error)
+                console.log('here')
+                this.errorAlert()
+            })
+        },
+
+        errorAlert (){
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Algo salió mal!',
+                footer: '<a href="/">Por favor recargue la página y vuelva a intentarlo</a>'
+            })
         }
+
+        
     }
 }
 </script>

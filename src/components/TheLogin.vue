@@ -88,7 +88,7 @@ export default {
         },
     }),
     methods:{
-        ...mapActions(['KEEP_ROLE_FROM_TOKEN']),
+        ...mapActions(['KEEP_ROLE_AND_TOKEN']),
         validate () {
             this.$refs.form.validate()?this.verifyUser():false;
         },
@@ -100,7 +100,7 @@ export default {
         async verifyUser () {
             try{
 
-                const response = await fetch('http://localhost:3000/api/admin/login',{
+                const response = await fetch(`${this.$url}/api/admin/login`,{
                     method:'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -113,7 +113,7 @@ export default {
                 });
                 const data = await response.json();
                 if(data){
-                    this.KEEP_ROLE_FROM_TOKEN(data.userToken)
+                    this.KEEP_ROLE_AND_TOKEN(data.userToken)
                     this.$router.push('/admin')
                 }
             }catch(error){

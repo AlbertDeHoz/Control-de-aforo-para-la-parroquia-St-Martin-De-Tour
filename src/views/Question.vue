@@ -1,10 +1,9 @@
 <template>
-    <v-container>
+    <v-container class="set_max_width">
         <user-disabled v-if="userEnabled===false"/>
         <user-enabled v-else-if="userEnabled"/>
         <question-form v-else-if="userEnabled === null && attendance <= attendaceMax"/>
         <full-capacity v-else />
-        <pre>{{attendance}}</pre>
     </v-container>
 </template>
 <script>
@@ -31,12 +30,12 @@ export default {
     },
     computed: {
         ...mapGetters(
-            ['userEnabled']
+            ['userEnabled','token']
         ),
     },
-    beforeUpdated() {
-        this.KEEP_ENABLED(true)
-    },
+    //beforeUpdated() {
+    //    this.KEEP_ENABLED(true)
+    //},
     created () {
         this.isAttendanceComplete()
     },
@@ -46,11 +45,19 @@ export default {
         async isAttendanceComplete () {
             const response = await fetch('http://localhost:3000/api/user/countuser')
             const data = await response.json()
-            this.attendance = data[0].conteo
-            console.log(this.attendance)
-            
+            if (data.length == 0){
+                this.attendance = 0
+            }else{
+                this.attendance = data[0].conteo
+            }
         }
+        
     }
 
 }
 </script>
+<style scoped>
+.set_max_width{
+    max-width: 900px !important;
+}
+</style>

@@ -12,8 +12,10 @@ export default new Vuex.Store({
         token:null,
         role: null,
 
-        userId: null,
-        userIdType: null,
+        userId:{
+            idNumber:null,
+            idType:null,
+        },
         userEnabled: null,
         userBirth: null,
     },
@@ -22,7 +24,6 @@ export default new Vuex.Store({
         userId: state => state.userId,
         token: state => state.token,
         userEnabled: state => state.userEnabled,
-        userIdType: state => state.userIdType,
         userBirth: state => state.userBirth
     },
     mutations:{
@@ -34,9 +35,6 @@ export default new Vuex.Store({
         },
         SET_ENABLE(state, enable){
             state.userEnabled = enable;
-        },
-        SET_USER_IDTYPE(state,userIdType){
-            state.userIdType = userIdType;
         },
         SET_USER_BIRTH(state, userBirth){
             state.userBirth = userBirth
@@ -56,14 +54,14 @@ export default new Vuex.Store({
             commit('SET_ENABLE',enable);
         },
         KEEP_USERID({commit}, userId){
-            commit('SET_USERID',userId.idNumber);
-            commit('SET_USER_IDTYPE',userId.idType)
+            commit('SET_USERID',userId);
         },
         KEEP_USERBIRTH({commit}, userBirth){
             commit('SET_USER_BIRTH',userBirth)
         },
-        KEEP_ROLE_FROM_TOKEN({commit},Token){
+        KEEP_ROLE_AND_TOKEN({commit},Token){
             const tokenDecode = jwtDecode(Token)
+            commit('SET_TOKEN',Token)
             commit('SET_ROLE',tokenDecode.role)
         }
     },

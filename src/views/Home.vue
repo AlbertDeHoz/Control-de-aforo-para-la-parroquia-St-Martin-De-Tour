@@ -1,8 +1,10 @@
 <template>
-  <div >
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HomeForm  msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app >
+    <div class="mx-auto">
+    <img alt="Vue logo" width="400px" src="../assets/logo.jpg">
+    </div>
+    <HomeForm />
+  </v-app>
 </template>
 
 <script>

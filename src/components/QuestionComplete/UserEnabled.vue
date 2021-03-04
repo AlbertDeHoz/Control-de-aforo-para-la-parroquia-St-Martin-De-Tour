@@ -39,6 +39,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import Swal from 'sweetalert2'
 
 export default {
     data: () => ({
@@ -48,19 +49,35 @@ export default {
     methods: {
         async setNull () {
             try{
-                this.clearAttendance = !this.clearAttendance
-                await fetch('http://localhost:3000/api/user/null',{
+                const response = await fetch(`${this.$url}/api/user/null`,{
                     method:'PUT',
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({idNumber:this.userId})
+                    },                    
+                    body: JSON.stringify(this.userId)
                 })
+                const data = await response.json ()
+                if (data.error){
+                    this.errorAlert()
+                }else {
+                    this.clearAttendance = true
+                }
             }catch(error){
-                console.error(error)
+                console.log(error)
+                this.errorAlert()
             }
+        },
+        errorAlert () {
+            Swal.fire({
+            icon: 'error',
+            title: 'No se pudo liberar tu cupo',
+            text: 'Hubo un error al procesar tu solicitud, por favor comuniquese con nosotros',
+            footer: '<a href="/">O intenta más tarde, haciendo click aquí</a>'
+            })
         }
+
+
     },
     computed: {
         ...mapGetters(['userId'])

@@ -75,30 +75,50 @@ const router = new VueRouter({
   mode:'history',
   routes
 })
-router.beforeEach((to,from,next) => {
-  const user = store.state.userId;
+const userExist = () => {
+  try{
+    const {idNumber,idType} = store.state.userId;
+    return (idNumber!=null && idType != null) ? true:false;
+  }catch{
+    return false
+  }
+}
+router.beforeEach((to,from,next) =>{
+  //const user = userExist()
   const registro = to.matched.some(record => record.meta.registro);
   const autorizacion = to.matched.some(record => record.meta.autorizacion);
-  const role = store.state.role
+  const role = store.state.role;
   if (autorizacion){
-    if ( role !=="Administrador"){
+    if (role !== "Administrador"){
       next({path:'/auth'})
+    }else {
+      next()
     }
-    else {
-      console.log(role)
+  }else{
+    if (registro && !userExist()){
+      next({path:'/'})
+    }
+    else{
       next()
     }
   }
-  else {
-    if (!user && registro){
-      next('Home')
-    }else if( user && !registro){
-      next('Question')
-    }else{
-      next()
-    }
-  }
-
 })
+
+//router.beforeEach((to,from,next) => {
+//  //const user = store.state.userId;
+//  //const registro = to.matched.some(record => record.meta.registro);
+//  const autorizacion = to.matched.some(record => record.meta.autorizacion);
+//  const role = store.state.role
+//  if (autorizacion){
+//    if ( role !=="Administrador"){
+//      next({path:'/auth'})
+//    }
+//    else {
+//      console.log(role)
+//      next()
+//    }
+//  }
+//
+//})
 
 export default router

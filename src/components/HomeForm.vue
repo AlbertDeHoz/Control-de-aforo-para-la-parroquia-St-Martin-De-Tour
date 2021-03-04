@@ -1,56 +1,70 @@
 <template >
-  <v-app >
     <v-container >
-      <v-form 
-        ref="form"
-        v-model="valid"
-        lazy-validation
+      <v-row
+      justify="center"
+      no-gutters
       >
-      <v-select
-        v-model="user.idType"
-        :items="values"
-        :rules="[v => !!v || 'Item is required']"
-        label="Item"
-        required
-      ></v-select>
+        <v-col 
+        lg = "12"
+        >
+        <v-card
+        max-width="400px"
+        class="mx-auto"
+        >
+        <v-container>
+        <v-form 
+          ref="form"
+          v-model="valid"
+          lazy-validation
+        >
+        <v-select
+          v-model="user.idType"
+          :items="values"
+          :rules="[v => !!v || 'Se requiere tipo de Identificación.']"
+          label="Tipo de identificación"
+          required
+        ></v-select>
 
-      <v-text-field
-        v-model="user.idNumber"
-        :rules="idRules"
-        label="Cédula"
-        @keypress="isNumber($event)"
-        required
-      ></v-text-field>
+        <v-text-field
+          v-model="user.idNumber"
+          :rules="idRules"
+          label="Número de Identificación"
+          @keypress="isNumber($event)"
+          required
+        ></v-text-field>
 
-      <v-checkbox
-        v-model="checkbox"
-        :rules="[v => !!v || 'You must agree to continue!']"
-        label="¿Estás de acuerdo?"
-        required
-      ></v-checkbox>
+        <v-checkbox
+          v-model="checkbox"
+          :rules="[v => !!v || '¡Debes estar de acuerdo para continuar!']"
+          label="¿Estás de acuerdo?"
+          required
+        ></v-checkbox>
 
-      <v-btn
-        :disabled="!valid"
-        color="success"
-        class="mr-4"
-        @click="validate"
-        v-if="showSendDate"
-      >
-        Enviar
-      </v-btn>
+        <v-btn
+          :disabled="!valid"
+          color="success"
+          class="mr-4"
+          @click="validate"
+          v-if="showSendDate"
+        >
+          Enviar
+        </v-btn>
 
-      <v-btn
-        color="error"
-        class="mr-4"
-        @click="reset"
-        v-if="showSendDate"
-      >
-        Limpiar
-      </v-btn>
-      <send-date v-if="!showSendDate"/>
-    </v-form>
+        <v-btn
+          color="error"
+          class="mr-4"
+          @click="reset"
+          v-if="showSendDate"
+        >
+          Limpiar
+        </v-btn>
+        <send-date v-if="!showSendDate"/>
+      </v-form>
+      </v-container>
+      </v-card>
+      </v-col>
+    </v-row>
   </v-container>
-  </v-app>
 </template>
 
 <script>
@@ -74,8 +88,8 @@ import Swal from 'sweetalert2'
       },
 
       idRules: [
-        v => !!v || 'Id is required',
-        v => (v && v.length >= 5) || 'Name must be more than 4 characters'
+        v => !!v || 'Se requiere Número de Identificación.',
+        v => (v && v.length >= 5) || 'Identificación debe tener más de 5 caracteres.'
         //v => /.+@.+\..+/.test(v) || 'id must be valid',
       ],
       checkbox: false
@@ -89,7 +103,7 @@ import Swal from 'sweetalert2'
 
     methods: {
       ...mapActions([
-        'KEEP_USERID','KEEP_USERTOKEN','KEEP_USERID'
+        'KEEP_USERID','KEEP_USERTOKEN'
       ]),
       isNumber: function(evt) {
         evt = (evt) ? evt : window.event;
@@ -106,7 +120,7 @@ import Swal from 'sweetalert2'
        * 
        */
       getValues () {
-        axios.get('http://localhost:3000/api/type/list')
+        axios.get(this.$url+'/api/type/list')
         .then( res => res.data)
         .then( data => {
           data.forEach(element => {
@@ -129,7 +143,7 @@ import Swal from 'sweetalert2'
        * se ejecuta el método verify()
        */
       setIdType(){
-        axios.get('http://localhost:3000/api/type/list')
+        axios.get(this.$url + '/api/type/list')
         .then( res => res.data)
         .then(data => {
           const index = this.values.indexOf(this.user.idType);
@@ -145,17 +159,15 @@ import Swal from 'sweetalert2'
        *redireccina a las preguntas si todo está bien
        */
       verify() {
-        axios.post('http://localhost:3000/api/user/signin',this.user)
+        axios.post(this.$url + '/api/user/signin',this.user)
         .then((response) => response.data)
         .then(data => {
           if (data.tokenUser){
             this.KEEP_USERTOKEN(data.tokenUser)
-            if(this.userBirth===null){
-              console.log('hay que registrar el nacimiento')
+            if(this.userBirth===null){  //hay que registrar el nacimiento
               this.showSendDate = !this.showSendDate
             }
-            else {
-              console.log('ya está registrado')
+            else {    //nacimiento ya registrado
               this.$router.push('/question')
             }
           }
@@ -177,4 +189,3 @@ import Swal from 'sweetalert2'
     },
   }
 </script>
-
