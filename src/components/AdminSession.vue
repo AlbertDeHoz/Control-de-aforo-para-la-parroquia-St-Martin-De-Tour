@@ -330,7 +330,7 @@ export default {
             async setEnable (item) {
                 //this.editedIndex = this.Users.indexOf(item)
                 this.editedItem = Object.assign({}, item)
-                await fetch('${this.$url}/api/user/enable',{
+                await fetch(`${this.$url}/api/user/enable`,{
                     method:'PUT',
                     headers: {
                         'Accept': 'application/json',
