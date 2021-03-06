@@ -43,7 +43,7 @@ export default {
         ...mapActions(['KEEP_ENABLED']),
 
         async isAttendanceComplete () {
-            const response = await fetch('http://localhost:3000/api/user/countuser')
+            const response = await fetch(`${this.$url}/api/user/countuser`)
             const data = await response.json()
             if (data.length == 0){
                 this.attendance = 0
