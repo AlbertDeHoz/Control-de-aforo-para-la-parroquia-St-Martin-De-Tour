@@ -2,11 +2,11 @@
         <v-app>
         <v-card
             elevation="4"
-            max-width="500px"
+            max-width="430px"
             class="mx-auto"
-            justify="space-around"
         >
-            <v-card-title class="mx-auto">Lo sentimos, usted no pudo ser registrado</v-card-title>
+            <v-card-title class="mx-auto justify-start"><h2>Lo sentimos, usted no pudo ser registrado</h2></v-card-title>
+            <v-img src="../../assets/error.png"></v-img>
             <v-card-subtitle>Registro sin éxito</v-card-subtitle>
             <v-card-text>
                 Debido a la situación actual, estamos tomando todas las precauciones posibles y le invitamos a que haga lo mismo. 

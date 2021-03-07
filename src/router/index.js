@@ -12,14 +12,6 @@ const routes = [
     redirect:'/'
   },
   {
-    path: '/',
-    name: 'Home',
-    component: Home,
-    meta:{
-      registro: false
-    }
-  },
-  {
     path: '/register',
     name: 'Register',
     // route level code-splitting
@@ -37,6 +29,14 @@ const routes = [
     meta:{
       registro: true
     },
+  },
+  {
+    path: '/',
+    name: 'Home',
+    component: Home,
+    meta:{
+      registro: false
+    }
   },
   /**
    * Este es el lado del administrador

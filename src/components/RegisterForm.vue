@@ -170,7 +170,7 @@ export default {
     },
 
     methods: {
-        ...mapActions(['KEEP_USERID']),
+        ...mapActions(['KEEP_USERID','KEEP_ENABLED']),
 
         cleanIdAndTypeStore(){
             this.idNumber = this.userId.idNumber;
@@ -209,16 +209,16 @@ export default {
 
         setUser () {
             this.user.idNumber = this.idNumber;
-            this.user.idType = 'CC'
+            this.user.idType = this.idType
             this.user.lastName = this.firstLastname +' '+this.secondLastname;
             this.user.firstName = this.user.firstName.toUpperCase();
             this.user.lastName = this.user.lastName.toUpperCase();
             this.user.address = this.user.address.toUpperCase();
+            this.KEEP_ENABLED(null)
         },
 
         register(){
             this.setUser()
-            console.log(this.user)
             this.KEEP_USERID({
                 idNumber: this.idNumber,
                 idType:this.idType

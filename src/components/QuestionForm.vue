@@ -1,8 +1,8 @@
 <template>
     <v-app>
         <h2>*Preguntas de autoevaluación COVID-19* </h2>
-        <p>Debe responder "NO" a todas las preguntas de este cuestionario para ingresar a nuestra ubicación física. Si responde "SÍ" a alguna de las preguntas, NO entre los edificios de la empresa y notifique a su superior inmediato.
-        <br/>Si experimenta algún síntoma o responde "SÍ" a cualquiera de estas preguntas, debe comunicarse de inmediato con su profesional de la salud para conocer los próximos pasos recomendados y notificar a su gerente y Recursos Humanos.</p>
+        <img src="../assets/identifica_los_sintomas.jpg" alt="identifica los síntomas." width="500px">
+        <p>Por favor responda marcando SI o NO en cada uno de los siguientes sintomas para determinar su riesgo de coronavirus (COVID-19)</p>
         
         
         <p>Responder _si_ o _no_ a las siguientes preguntas:</p>
@@ -55,24 +55,36 @@ export default {
         questions:[],
         answers: new Array(),
         isAbleToSend: true,
+        idNumber: null,
+        idType: null,
     }),
     mounted(){
         this.listQuestion();
     },
     computed: {
         ...mapGetters([
-            "userId","token","userEnabled"
+            "userId",
         ])
     },
-
+    created(){
+        this.cleanIdAndTypeStore()
+    },
     methods: {
-        ...mapActions(['KEEP_ENABLED']),
+        ...mapActions(['KEEP_ENABLED','KEEP_USERID']),
+
+        cleanIdAndTypeStore(){
+            this.idNumber = this.userId.idNumber;
+            this.idType = this.userId.idType;
+            this.KEEP_USERID(null)
+            //this.userIdType
+        },
+
         validate () {
             if(this.$refs.form.validate()){
                 this.setEnable()
-                //this.KEEP_ENABLED(this.response)
                 this.KEEP_ENABLED(null)
                 this.isAbleToSend = false
+
             }
         },
         listQuestion () {
@@ -89,7 +101,10 @@ export default {
             const response = this.answers.find(element => element === 'si')?false:true
             const userAptitude = response?'enable':'disable';
             axios
-            .put(`${this.$url}/api/user/${userAptitude}`,this.userId)
+            .put(`${this.$url}/api/user/${userAptitude}`,{
+                idNumber:this.idNumber,
+                idType: this.idType
+            })
             .then( (res) => {
                 if (res.data){
                     this.KEEP_ENABLED(response)

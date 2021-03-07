@@ -2,15 +2,15 @@
     <v-app>
         <v-card
             elevation="4"
-            max-width="700px"
+            max-width="500px"
             class="mx-auto"
             justify="space-around"
             v-if="!clearAttendance"
         >
-            <v-card-title class="mx-auto"> Registro Exitoso</v-card-title>
+        <v-card-title class="mx-auto" > Registro Exitoso</v-card-title>
             <v-card-subtitle>Su registro se completó correctamente</v-card-subtitle>
             <v-card-text class="mx-5">
-                Si por alguna razón usted no puede asistir, puede dejar su cupo a disposición de otra persona. <br>
+                Si por alguna razón usted no puede asistir, puede dejar su cupo a disposición de otra persona.
                 Puede liberar su cupo haciendo click en el botón de abajo.
             </v-card-text>
             <v-card-actions>
@@ -20,7 +20,8 @@
                 >
                     Liberar mi cupo
                 </v-btn>
-            </v-card-actions>
+            </v-card-actions>            
+        <v-img src="../../assets/prevencion.jpg" height = "600px" alt=""></v-img>
         </v-card>
         <v-card
             elevation="4"

@@ -37,8 +37,6 @@
         @change="save"
         ></v-date-picker>
     </v-menu>
-    <pre>{{date}}</pre>
-    <pre>{{userId}}</pre>
     </v-container>
     </v-app>
 </template>
@@ -70,13 +68,14 @@
       async verify() {
         this.KEEP_USERBIRTH(this.date)
         try{
+          console.log(this.userId)
           const response = await fetch(`${this.$url}/api/user/birth`,{
             method:'PUT',
             headers: {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              idNumber: this.userId,
+              idNumber: this.userId.idNumber,
               birth:this.date
             })
           })
