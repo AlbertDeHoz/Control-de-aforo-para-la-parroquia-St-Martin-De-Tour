@@ -1,11 +1,10 @@
 <template>
     <v-app>
-        <h2>*Preguntas de autoevaluación COVID-19* </h2>
+        <h1>*Preguntas de autoevaluación COVID-19* </h1>
         <img src="../assets/identifica_los_sintomas.jpg" alt="identifica los síntomas." width="500px">
-        <p>Por favor responda marcando SI o NO en cada uno de los siguientes sintomas para determinar su riesgo de coronavirus (COVID-19)</p>
         
         
-        <p>Responder _si_ o _no_ a las siguientes preguntas:</p>
+        <h3>¡Hola {{username}}!, por favor responda "si" o "no" a las siguientes preguntas para determinar su riesgo de coronavirus (COVID-19):</h3>
         <v-form
         ref="form"
         v-model="valid"
@@ -63,7 +62,7 @@ export default {
     },
     computed: {
         ...mapGetters([
-            "userId",
+            "userId","username"
         ])
     },
     created(){

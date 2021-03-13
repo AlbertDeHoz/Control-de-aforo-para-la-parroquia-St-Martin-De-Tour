@@ -51,17 +51,31 @@ const routes = [
   },
   {
     path: '/admin',
-    name: 'Admin',
-    component: () => import('../views/Auth.vue'),
+    //name: 'Admin',
+    component: () => import('../views/Admin/Admin.vue'),
     meta:{
       registro: false,
       autorizacion: true
     },
     children:[
       {
+        path:'/',
+        name:'Admin',
+        component: () => import("../views/Admin/Home.vue")
+      },
+      {
         path:'userlist',
         name:'UserList',
-        component: () => import('../views/Admin.vue'),
+        component: () => import('../views/Admin/Userlist.vue'),
+        meta:{
+          registro: false,
+          autorizacion: true
+        }
+      },
+      {
+        path:'services',
+        name:'Services',
+        component: () => import('../views/Admin/Services.vue'),
         meta:{
           registro: false,
           autorizacion: true
@@ -104,21 +118,5 @@ router.beforeEach((to,from,next) =>{
   }
 })
 
-//router.beforeEach((to,from,next) => {
-//  //const user = store.state.userId;
-//  //const registro = to.matched.some(record => record.meta.registro);
-//  const autorizacion = to.matched.some(record => record.meta.autorizacion);
-//  const role = store.state.role
-//  if (autorizacion){
-//    if ( role !=="Administrador"){
-//      next({path:'/auth'})
-//    }
-//    else {
-//      console.log(role)
-//      next()
-//    }
-//  }
-//
-//})
 
 export default router

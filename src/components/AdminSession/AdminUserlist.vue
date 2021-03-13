@@ -1,4 +1,5 @@
 <template>
+<v-app>
     <v-data-table
         :headers="headers"
         :items="Users"
@@ -251,6 +252,7 @@
             </v-btn>
         </template>
     </v-data-table>
+    </v-app>
 </template>
 
 <script>

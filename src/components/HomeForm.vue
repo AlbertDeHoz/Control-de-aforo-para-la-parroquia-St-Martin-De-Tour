@@ -8,59 +8,79 @@
         lg = "12"
         >
         <v-card
-        max-width="400px"
+        max-width="450px"
         class="mx-auto"
         >
-        <v-container>
-        <v-form 
-          ref="form"
-          v-model="valid"
-          lazy-validation
+          <v-container
+            v-if ="enabledForm===null"
+            class="text-center"
+          >
+            <div> 
+                <v-progress-circular
+                :size="50"
+                color="primary"
+                indeterminate
+              ></v-progress-circular>
+            </div>
+          </v-container>
+          <v-container
+          v-else-if="enabledForm===true"
+          >
+          <v-card-title>
+            Eucaristía para el día {{service.schedule}}
+          </v-card-title>
+          <v-card-subtitle>
+            {{service.name}}
+          </v-card-subtitle>
+          <v-form 
+            ref="form"
+            v-model="valid"
+            lazy-validation
+          >
+          <v-select
+            v-model="user.idType"
+            :items="values"
+            :rules="[v => !!v || 'Se requiere tipo de Identificación.']"
+            label="Tipo de identificación"
+            required
+          ></v-select>
+
+          <v-text-field
+            v-model="user.idNumber"
+            :rules="idRules"
+            label="Número de Identificación"
+            @keypress="isNumber($event)"
+            required
+          ></v-text-field>
+
+          <v-btn
+            :disabled="!valid"
+            color="success"
+            class="mr-4"
+            @click="validate"
+            v-if="showSendDate"
+          >
+            Enviar
+          </v-btn>
+
+          <v-btn
+            color="error"
+            class="mr-4"
+            @click="reset"
+            v-if="showSendDate"
+          >
+            Limpiar
+          </v-btn>
+          <send-date v-if="!showSendDate"/>
+        </v-form>
+        </v-container>
+        <v-container
+        v-else
         >
-        <v-select
-          v-model="user.idType"
-          :items="values"
-          :rules="[v => !!v || 'Se requiere tipo de Identificación.']"
-          label="Tipo de identificación"
-          required
-        ></v-select>
-
-        <v-text-field
-          v-model="user.idNumber"
-          :rules="idRules"
-          label="Número de Identificación"
-          @keypress="isNumber($event)"
-          required
-        ></v-text-field>
-
-        <v-checkbox
-          v-model="checkbox"
-          :rules="[v => !!v || '¡Debes estar de acuerdo para continuar!']"
-          label="¿Estás de acuerdo?"
-          required
-        ></v-checkbox>
-
-        <v-btn
-          :disabled="!valid"
-          color="success"
-          class="mr-4"
-          @click="validate"
-          v-if="showSendDate"
-        >
-          Enviar
-        </v-btn>
-
-        <v-btn
-          color="error"
-          class="mr-4"
-          @click="reset"
-          v-if="showSendDate"
-        >
-          Limpiar
-        </v-btn>
-        <send-date v-if="!showSendDate"/>
-      </v-form>
-      </v-container>
+          <v-card-title>
+            El formulario no está disponible aún
+          </v-card-title>
+        </v-container>
       </v-card>
       </v-col>
     </v-row>
@@ -79,6 +99,8 @@ import Swal from 'sweetalert2'
       SendDate
     },
     data: () => ({
+      service:{},
+      enabledForm : null,
       values: [],
       valid: true,
       showSendDate : true,
@@ -92,18 +114,18 @@ import Swal from 'sweetalert2'
         v => (v && v.length >= 5) || 'Identificación debe tener más de 5 caracteres.'
         //v => /.+@.+\..+/.test(v) || 'id must be valid',
       ],
-      checkbox: false
     }),
     computed: {
       ...mapGetters(['userBirth'])
     },
     created() {
-      this.getValues ()
+      this.getService();
+      this.getValues ();
     },
 
     methods: {
       ...mapActions([
-        'KEEP_USERID','KEEP_USERTOKEN'
+        'KEEP_USERID','KEEP_USERTOKEN','KEEP_ATTENDANCEMAX'
       ]),
       isNumber: function(evt) {
         evt = (evt) ? evt : window.event;
@@ -113,6 +135,14 @@ import Swal from 'sweetalert2'
         } else {
           return true;
         }
+      },
+
+      async getService (){
+        const response = await fetch(this.$url + "/api/service/");
+        const data = await response.json();
+        this.enabledForm = data.enable;
+        this.service = data;
+        this.KEEP_ATTENDANCEMAX(data.attendance)
       },
       /**
        ************ getValues *****************
@@ -184,7 +214,7 @@ import Swal from 'sweetalert2'
           }else {
             this.$router.push('/register')
           }
-        })    
+        })
       }
     },
   }

@@ -2,7 +2,7 @@
     <v-container class="set_max_width">
         <user-disabled v-if="userEnabled===false"/>
         <user-enabled v-else-if="userEnabled"/>
-        <question-form v-else-if="userEnabled === null && attendance <= attendaceMax"/>
+        <question-form v-else-if="userEnabled === null && attendance < attendanceMax"/>
         <full-capacity v-else />
     </v-container>
 </template>
@@ -16,7 +16,6 @@ import {mapGetters,mapActions} from 'vuex'
 
 export default {
     data: () => ({
-        attendaceMax : 10,
         attendance: null
     }),
 
@@ -30,7 +29,7 @@ export default {
     },
     computed: {
         ...mapGetters(
-            ['userEnabled','token']
+            ['userEnabled','token','attendanceMax']
         ),
     },
     //beforeUpdated() {
@@ -38,6 +37,7 @@ export default {
     //},
     created () {
         this.isAttendanceComplete()
+        console.log(this.attendanceMax)
     },
     methods:{
         ...mapActions(['KEEP_ENABLED']),
@@ -49,6 +49,7 @@ export default {
                 this.attendance = 0
             }else{
                 this.attendance = data[0].conteo
+                console.log(this.attendance)
             }
         }
         

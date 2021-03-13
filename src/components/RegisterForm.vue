@@ -1,7 +1,7 @@
 <template>
     <v-container>
-
     <v-app>
+        <h1>Formulario de Inscripción Parroquia San Martín de Tours</h1>
         <v-form
             ref="form"
             v-model="valid"
@@ -80,14 +80,43 @@
             label="EPS"
             required
             ></v-select>
-
-            <v-checkbox
-            v-model="checkbox"
-            :rules="[v => !!v || '¡Debes estar de acuerdo para continuar!']"
-            label="Estoy de acuerdo"
-            required
-            ></v-checkbox>
-
+            <v-row>
+                <v-col
+                cols ="4"
+                md = "2"
+                >
+                    <v-checkbox
+                    v-model="checkbox"
+                    :rules="[v => !!v || '¡Debes estar de acuerdo para continuar!']"
+                    label="Estoy de acuerdo"
+                    required
+                    ></v-checkbox>
+                </v-col>
+                <v-col
+                cols="6"
+                md = "4"
+                class="pt-8"
+                >
+                    <a href="#terms" @click="expand = !expand">leer términos y condiciones</a>
+                </v-col>
+            </v-row>
+             <v-alert
+             id="terms"
+             v-show="expand"
+            border="left"
+            colored-border
+            color="deep-purple accent-4"
+            elevation="2"
+            >
+            <h3 class="text-h5">
+                Autorización para el tratamiento y uso de datos personales.     
+            </h3>
+            <div class="pl-10">
+                <p class="font-weight-light text-justify">
+                    De conformidad con lo previsto en la Ley 1581 de 2012 “por la cual se dictan las disposiciones generales para la protección de datos personales” y el Decreto 1377 de 2013, que la reglamentan parcialmente, manifiesto que otorgo mi autorización expresa y clara para que la PARROQUIA SAN MARTIN DE TOURS, pueda hacer tratamiento y uso de mis datos personales, los cuales estarán reportados en la base de datos de la que es responsable dicha organización y que han sido recolectados por el formulario que he diligenciado. De acuerdo con la normatividad citada, la PARROQUIA SAN MARTIN DE TOURS queda autorizado de manera expresa e inequívoca para mantener y manejar la información suministrada, solo para aquellas finalidades para las que se encuentra facultado y respetando en todo caso, la normatividad vigente sobre protección de datos personales. No obstante, me reservo el derecho a ejercer en cualquier momento la posibilidad de conocer, actualizar, rectificar y solicitar la supresión de mis datos personales en la base de datos de la PARROQUIA SAN MARTIN DE TOURS, cuando así lo estime conveniente.
+                </p>
+            </div>
+            </v-alert>
             <v-btn
             :disabled="!valid"
             color="success"
@@ -116,7 +145,8 @@ import {mapActions, mapGetters} from 'vuex';
 export default {
     name:'RegisterForm',
     data: () => ({
-        valid: true,          
+        valid: true,
+        expand: false,       
         menu: false,
         firstLastname: '',
         secondLastname:'',

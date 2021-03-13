@@ -11,6 +11,7 @@ export default new Vuex.Store({
          */
         token:null,
         role: null,
+        username: null,
 
         userId:{
             idNumber:null,
@@ -18,13 +19,17 @@ export default new Vuex.Store({
         },
         userEnabled: null,
         userBirth: null,
+
+        attendanceMax: null
     },
     getters: {
         role: state => state.role,
         userId: state => state.userId,
         token: state => state.token,
         userEnabled: state => state.userEnabled,
-        userBirth: state => state.userBirth
+        userBirth: state => state.userBirth,
+        username: state => state.username,
+        attendanceMax: state => state.attendanceMax
     },
     mutations:{
         SET_TOKEN(state, token){
@@ -41,6 +46,12 @@ export default new Vuex.Store({
         },
         SET_ROLE(state,Role){
             state.role = Role
+        },
+        SET_USERNAME(state,username){
+            state.username = username
+        },
+        SET_ATTENDANCEMAX(state,attendanceMax){
+            state.attendanceMax = attendanceMax
         }
     },
     actions:{
@@ -49,6 +60,7 @@ export default new Vuex.Store({
             const tokenDecode = jwtDecode(pToken);
             commit('SET_ENABLE',tokenDecode.enable);
             commit('SET_USER_BIRTH',tokenDecode.birth);
+            commit('SET_USERNAME',tokenDecode.name);
         },
         KEEP_ENABLED({commit},enable){
             commit('SET_ENABLE',enable);
@@ -63,6 +75,13 @@ export default new Vuex.Store({
             const tokenDecode = jwtDecode(Token)
             commit('SET_TOKEN',Token)
             commit('SET_ROLE',tokenDecode.role)
+        },
+        KEEP_USERNAME({commit},username){
+            commit('SET_USERNAME',username)
+        },
+
+        KEEP_ATTENDANCEMAX({commit},attendanceMax){
+            commit('SET_ATTENDANCEMAX',attendanceMax)
         }
     },
     
