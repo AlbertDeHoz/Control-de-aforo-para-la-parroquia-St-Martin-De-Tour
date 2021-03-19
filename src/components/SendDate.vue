@@ -44,6 +44,7 @@
         <v-btn
         :disabled="date===null?true:false"
         @click="verify"
+        class="indigo darken-4 indigo--text text--lighten-5"
         >
           Enviar
         </v-btn>

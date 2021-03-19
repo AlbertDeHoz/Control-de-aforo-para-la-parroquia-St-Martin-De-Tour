@@ -1,10 +1,14 @@
 <template>
-    <v-container class="set_max_width">
+
+    <div
+    style="max-width:900px;margin-right:auto;margin-left:auto"
+    >
         <user-disabled v-if="userEnabled===false"/>
         <user-enabled v-else-if="userEnabled"/>
         <question-form v-else-if="userEnabled === null && attendance < attendanceMax"/>
         <full-capacity v-else />
-    </v-container>
+
+    </div>
 </template>
 <script>
 import QuestionForm from '../components/QuestionForm.vue'
@@ -57,8 +61,3 @@ export default {
 
 }
 </script>
-<style scoped>
-.set_max_width{
-    max-width: 900px !important;
-}
-</style>

@@ -1,27 +1,39 @@
 <template>
     <v-app>
+        <v-container>
         <v-card
             elevation="4"
             max-width="500px"
-            class="mx-auto"
+            class="mx-auto indigo lighten-3"
             justify="space-around"
             v-if="!clearAttendance"
         >
-        <v-card-title class="mx-auto" > Registro Exitoso</v-card-title>
-            <v-card-subtitle>Su registro se completó correctamente</v-card-subtitle>
+        <v-img 
+        contain
+        src="../../assets/prevencion1.jpg"
+        alt=""></v-img>
+        <v-card-title style="color:#252349" ><span class="indigo lighten-5 px-3 rounded-lg">Registro Exitoso</span></v-card-title>
+            <v-card-subtitle class = 'pl-7' style="color:#252349">Su registro se completó correctamente</v-card-subtitle>
             <v-card-text class="mx-5">
                 Si por alguna razón usted no puede asistir, puede dejar su cupo a disposición de otra persona.
                 Puede liberar su cupo haciendo click en el botón de abajo.
             </v-card-text>
-            <v-card-actions>
-                <v-btn
-                class="blue mx-auto"
+            <v-card-actions
+            class="justify-center"
+            >
+            <v-btn
+                class="indigo darken-4 indigo--text text--lighten-4"
                 @click="setNull"
                 >
                     Liberar mi cupo
                 </v-btn>
-            </v-card-actions>            
-        <v-img src="../../assets/prevencion.jpg" height = "600px" alt=""></v-img>
+            <v-btn
+                class="pink darken-3 indigo--text text--lighten-5"
+                to="/"
+                >
+                    Ir al formulario
+                </v-btn>
+            </v-card-actions>              
         </v-card>
         <v-card
             elevation="4"
@@ -35,6 +47,7 @@
                 Puede volver a registrarse, ingresando sus datos en el formulario inicial y volviendo a llenar la encuesta
             </v-card-text>
         </v-card>
+        </v-container>
     </v-app>
 </template>
 

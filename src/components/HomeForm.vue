@@ -9,8 +9,10 @@
         >
         <v-card
         max-width="450px"
-        class="mx-auto"
+        class="mx-auto py-5"
         >
+          <v-img class = "mx-auto " width="300px" src="../assets/logo.jpg">
+          </v-img>
           <v-container
             v-if ="enabledForm===null"
             class="text-center"
@@ -27,7 +29,7 @@
           v-else-if="enabledForm===true"
           >
           <v-card-title>
-            Eucaristía para el día {{service.schedule}}
+            {{service.schedule}}
           </v-card-title>
           <v-card-subtitle>
             {{service.name}}
@@ -36,31 +38,35 @@
             ref="form"
             v-model="valid"
             lazy-validation
+            class="px-5"
           >
           <v-select
             v-model="user.idType"
             :items="values"
             :rules="[v => !!v || 'Se requiere tipo de Identificación.']"
             label="Tipo de identificación"
+            class="px-5 teal lighten-5"
             required
           ></v-select>
 
           <v-text-field
             v-model="user.idNumber"
             :rules="idRules"
+            class="px-5 teal lighten-5"
             label="Número de Identificación"
             @keypress="isNumber($event)"
             required
           ></v-text-field>
-
+          <v-card-actions
+          class="justify-end"
+          >
           <v-btn
             :disabled="!valid"
-            color="success"
-            class="mr-4"
+            class="mr-4 indigo darken-4 indigo--text text--lighten-5"
             @click="validate"
             v-if="showSendDate"
           >
-            Enviar
+            ¡Quiero asistir!
           </v-btn>
 
           <v-btn
@@ -71,6 +77,7 @@
           >
             Limpiar
           </v-btn>
+          </v-card-actions>
           <send-date v-if="!showSendDate"/>
         </v-form>
         </v-container>

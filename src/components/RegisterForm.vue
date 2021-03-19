@@ -1,11 +1,23 @@
 <template>
-    <v-container>
     <v-app>
-        <h1>Formulario de Inscripción Parroquia San Martín de Tours</h1>
+        <div>
+            <v-toolbar
+            dark
+            prominent
+            src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
+            >
+            <v-toolbar-title class="mx-auto">Formulario de Inscripción Parroquia San Martín de Tours</v-toolbar-title>
+
+            </v-toolbar>
+        </div>
+        <v-container
+        class = "pt-10 px-10 indigo lighten-5"
+        >
         <v-form
             ref="form"
             v-model="valid"
             lazy-validation
+            
         >
             <v-text-field
             v-model="user.firstName"
@@ -83,7 +95,7 @@
             <v-row>
                 <v-col
                 cols ="4"
-                md = "2"
+                md = "3"
                 >
                     <v-checkbox
                     v-model="checkbox"
@@ -97,7 +109,7 @@
                 md = "4"
                 class="pt-8"
                 >
-                    <a href="#terms" @click="expand = !expand">leer términos y condiciones</a>
+                    <a @click.stop="expand = !expand" class="indigo--text text--darken-1">leer términos y condiciones</a>
                 </v-col>
             </v-row>
              <v-alert
@@ -119,7 +131,7 @@
             </v-alert>
             <v-btn
             :disabled="!valid"
-            color="success"
+            color="indigo darken-4 indigo--text text--lighten-5"
             class="mr-4"
             @click="validate"
             >
@@ -127,7 +139,7 @@
             </v-btn>
 
             <v-btn
-            color="error"
+            color="red darken-5 indigo--text text--lighten-5"
             class="mr-4"
             @click="reset"
             >
@@ -135,8 +147,8 @@
             </v-btn>
 
         </v-form>
+        </v-container>
     </v-app>
-    </v-container>
 </template>
 <script>
 import axios from 'axios';
