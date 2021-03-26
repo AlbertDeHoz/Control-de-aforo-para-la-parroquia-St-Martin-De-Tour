@@ -1,40 +1,24 @@
-import jwtDecode from 'jwt-decode';
-import Vue from 'vue';
-import Vuex from 'vuex';
+'use strict'
 
-Vue.use(Vuex);
-
-export default new Vuex.Store({
+export default {
     state:{
-        /**
-         * para usuarios administradores
-         */
         token:null,
-        role: null,
         username: null,
-
         userId:{
-            idNumber:null,
             idType:null,
+            idNumber:null,
         },
         userEnabled: null,
         userBirth: null,
-
-        service:null
     },
-    getters: {
-        role: state => state.role,
-        userId: state => state.userId,
+    getters:{
         token: state => state.token,
+        userId: state => state.userId,
         userEnabled: state => state.userEnabled,
         userBirth: state => state.userBirth,
         username: state => state.username,
-        service: state=> state.service
     },
-    mutations:{
-        SET_TOKEN(state, token){
-            state.token = token;
-        },
+    mutation:{
         SET_USERID(state,userid){
             state.userId = userid;
         },
@@ -44,15 +28,9 @@ export default new Vuex.Store({
         SET_USER_BIRTH(state, userBirth){
             state.userBirth = userBirth
         },
-        SET_ROLE(state,Role){
-            state.role = Role
-        },
         SET_USERNAME(state,username){
             state.username = username
         },
-        SET_SERVICE(state,service){
-            state.service = service
-        }
     },
     actions:{
         KEEP_USERTOKEN({commit}, pToken){
@@ -71,17 +49,9 @@ export default new Vuex.Store({
         KEEP_USERBIRTH({commit}, userBirth){
             commit('SET_USER_BIRTH',userBirth)
         },
-        KEEP_ROLE_AND_TOKEN({commit},Token){
-            const tokenDecode = jwtDecode(Token)
-            commit('SET_TOKEN',Token)
-            commit('SET_ROLE',tokenDecode.role)
-        },
         KEEP_USERNAME({commit},username){
             commit('SET_USERNAME',username)
         },
-        KEEP_SERVICE({commit},service){
-            commit('SET_SERVICE', service)
-        }
-    },
+    }
     
-})
+}

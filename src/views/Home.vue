@@ -11,13 +11,12 @@ import HomeForm from '@/components/HomeForm.vue'
 
 export default {
   name: 'Home',
+
   components: {
     HomeForm
   },
   computed: {
 
-  },
-  mounted() {
   },
   methods: {
   }

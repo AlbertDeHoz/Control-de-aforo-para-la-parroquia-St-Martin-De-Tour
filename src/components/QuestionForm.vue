@@ -54,7 +54,6 @@
             class="mt-4 text-right"
             >
             <v-btn
-            v-if="isAbleToSend"
             :disabled="!valid"
             color="indigo darken-4 indigo--text text--lighten-5"
             class="mr-4"
@@ -77,40 +76,34 @@ import Swal from 'sweetalert2';
 export default {
 
     name: 'QuestionForm',
+    props:['idType','idNumber'],
     data: () => ({
         valid:true,
         questions:[],
         answers: new Array(),
         isAbleToSend: true,
-        idNumber: null,
-        idType: null,
+        userInEntry:null,
     }),
     mounted(){
         this.listQuestion();
     },
     computed: {
         ...mapGetters([
-            "userId","username"
+            "username","service"
         ])
     },
-    created(){
-        this.cleanIdAndTypeStore()
-    },
     methods: {
-        ...mapActions(['KEEP_ENABLED','KEEP_USERID']),
-
-        cleanIdAndTypeStore(){
-            this.idNumber = this.userId.idNumber;
-            this.idType = this.userId.idType;
-            this.KEEP_USERID(null)
-            //this.userIdType
-        },
+        ...mapActions(['KEEP_ENABLED']),
+        
+        /**
+         * this.KEEP_ENABLED se limpia la variable enabled para que al rellenar otro formulario esta tenga valor nulo
+         */
 
         validate () {
             if(this.$refs.form.validate()){
-                this.setEnable()
+                this.verifyAnswer()
                 this.KEEP_ENABLED(null)
-                this.isAbleToSend = false
+                this.valid = !this.valid
 
             }
         },
@@ -124,8 +117,7 @@ export default {
         },
         
 
-        setEnable() { //Quelque réponse est affirmative?
-            const response = this.answers.find(element => element === 'si')?false:true
+        setEnable(response) { 
             const userAptitude = response?'enable':'disable';
             axios
             .put(`${this.$url}/api/user/${userAptitude}`,{
@@ -139,9 +131,50 @@ export default {
             })
             .catch(error => { 
                 console.log(error)
-                console.log('here')
                 this.errorAlert()
             })
+        },
+        
+        verifyAnswer(){
+            this.answers.find(element => element === 'si')?this.setDisabled():this.submitEnrollment()
+        },
+        async setDisabled(){
+            //al obtener un disabled hay que borrar todos los registros en enrollment
+            try{
+                this.setEnable(false);
+                const response = await fetch(this.$url + `/api/enrollment/clearUser`,{
+                    method:'DELETE',
+                    headers:{
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body:JSON.stringify({idNumber:this.idNumber})
+                })
+                const data = await response.json()
+                if(!response.ok && !data.error){
+                        throw new Error('error to send request')
+                }else{
+                    return
+                }
+            }catch(e){
+                console.error(e)
+            }
+
+        },
+
+        async submitEnrollment(){
+            try{
+                await axios.post(this.$url + "/api/enrollment/register",{
+                    idNumber:this.idNumber,
+                    code:this.service.code,
+                    schedule:this.service.schedule
+                })
+                this.setEnable(true)
+                this.$emit('isUserInEntry',true)
+            }catch(error){
+                console.error(error)
+                this.errorAlert()
+            }
         },
 
         errorAlert (){
@@ -152,8 +185,6 @@ export default {
                 footer: '<a href="/">Por favor recargue la página y vuelva a intentarlo</a>'
             })
         }
-
-        
     }
 }
 </script>

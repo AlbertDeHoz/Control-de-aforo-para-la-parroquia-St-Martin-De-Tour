@@ -260,6 +260,7 @@ export default {
         },
 
         register(){
+            this.valid=!this.valid
             this.setUser()
             this.KEEP_USERID({
                 idNumber: this.idNumber,
