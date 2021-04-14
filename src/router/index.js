@@ -100,22 +100,22 @@ const userExist = () => {
 router.beforeEach((to,from,next) =>{
   //const user = userExist()
   const registro = to.matched.some(record => record.meta.registro);
-  const autorizacion = to.matched.some(record => record.meta.autorizacion);
-  const role = store.state.role;
-  if (autorizacion){
-    if (role !== "Administrador"){
-      next({path:'/auth'})
-    }else {
-      next()
-    }
-  }else{
+  //const autorizacion = to.matched.some(record => record.meta.autorizacion);
+  //const role = store.state.role;
+  //if (autorizacion){
+  //  if (role !== "Administrador"){
+  //    next({path:'/auth'})
+  //  }else {
+  //    next()
+  //  }
+  //}else{
     if (registro && !userExist()){
       next({path:'/'})
     }
     else{
       next()
     }
-  }
+  //}
 })
 
 

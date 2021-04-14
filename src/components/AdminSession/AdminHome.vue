@@ -69,3 +69,26 @@
     </div>
     
 </template>
+<script>
+import {mapActions} from 'vuex'
+
+export default {
+    props:['input'],
+    data: () =>({
+        service:[]
+    }),
+    created(){
+        this.getServices()
+    },
+    methods:{
+        ...mapActions(['KEEP_SERVICE']),
+
+        async getServices(){
+            const response = await fetch(`${this.$url}/api/service/list`)
+            const service = await response.json()
+            console.log(this.input)
+            this.KEEP_SERVICE(service)
+        }
+    }
+}
+</script>

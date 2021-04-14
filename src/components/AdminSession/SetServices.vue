@@ -1,29 +1,39 @@
 <template>
-    <v-container>
-        <v-card
-        class="mx-auto px-4"
-        max-width="600"
-        color="blue lighten-5"
+    <v-container
+    class='mx-auto'
+    >
+    <service-add/>
+      <v-row
+      >
+        <v-col
+        v-for="service, key in services" :key="key"
+        sm="6"
+        cols="12"
         >
-            <v-card-title>
-                Configuración de Servicio
+        <v-card
+        class="mb-5 mx-auto px-5"
+        max-width="500"
+        color="indigo lighten-5 blue-grey--text text--darken-4"
+        >
+            <v-card-title class="justify-center">
+                Servicio: {{service.name}}
             </v-card-title>
             <v-text-field
-            v-model="name"
+            v-model="service.name"
             label="nombre"
             :rules="rules"
             hide-details="auto"
             ></v-text-field>
             <p>Nombre del servicio</p>
             <v-text-field 
-            v-model="attendance"
+            v-model="service.attendance"
             label="asistencia"
             hide-details="auto"
             >
             </v-text-field>
-            <p>Numero de personas a asistir</p>
+            <p>Personas a asistir</p>
             <v-text-field 
-            v-model="schedule"
+            v-model="service.schedule"
             label="Horario"
             hide-details="auto"
             >
@@ -35,7 +45,7 @@
                 cols="6"
                 >
                   <v-switch
-                  v-model="enable"
+                  v-model="service.enable"
                   label="Habilitar formulario"
                   ></v-switch>
                   
@@ -49,7 +59,7 @@
                   <v-btn
                     color="blue-grey"
                     class="ma-2 white--text"
-                    @click="updateService()"
+                    @click="updateService(service)"
                   >
                   Actualizar
                   <v-icon
@@ -63,12 +73,20 @@
                 </v-col>
             </v-row>
         </v-card>
+        </v-col>
+      </v-row>
   </v-container>
 </template>
 <script>
 
 import {mapGetters} from 'vuex'
+import ServiceAdd from './ServiceAdd'
+
 export default {
+  components:{
+    ServiceAdd
+  },
+
   data: () => ({
     name:null,
     attendance:null,
@@ -77,26 +95,27 @@ export default {
     rules: [
       value => !!value || 'Required.',
     ],
+    services: []
   }),
   created(){
     this.getService()
   },
   computed:{
-    ...mapGetters(['token'])
+    ...mapGetters(['token','service'])
   },
   methods:{
     async getService (){
-      const response = await fetch(this.$url + "/api/service/");
-      const data = await response.json()
-      this.setData(data)
+      const response = await fetch(this.$url + "/api/service/list");
+      const services = await response.json();
+      this.services = services
     },
-    setData(data){
-      this.name = data.name;
-      this.attendance = data.attendance;
-      this.schedule = data.schedule;
-      this.enable = data.enable;
+    setData(service){
+      this.name = service.name;
+      this.attendance = service.attendance;
+      this.schedule = service.schedule;
+      this.enable = service.enable;
     },
-    async updateService (){
+    async updateService (service){
       const response = await fetch(this.$url + "/api/service/update",{
         method:'PUT',
         headers: {
@@ -105,13 +124,19 @@ export default {
           'token': this.token
         },
         body: JSON.stringify({
-          name: this.name,
-          schedule: this.schedule,
-          attendance: this.attendance,
-          enable: this.enable
+          id:service.id,
+          name: service.name,
+          schedule: service.schedule,
+          attendance: service.attendance,
+          enable: service.enable
         })
       })
-      return response
+      if(response.ok){
+        this.getService()
+      }
+    },
+    async createService(){
+
     }
   }
 }
