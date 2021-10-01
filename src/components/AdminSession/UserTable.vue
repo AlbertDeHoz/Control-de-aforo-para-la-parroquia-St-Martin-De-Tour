@@ -1,4 +1,4 @@
-<template>
+<template>    
     <v-data-table
         :headers="headers"
         :items="Users"
@@ -252,10 +252,10 @@
         </template>
     </v-data-table>
 </template>
-
 <script>
 import Vue from 'vue'
 import JsonCSV from 'vue-json-csv'
+import {mapGetters} from 'vuex'
 
 Vue.component('downloadCsv', JsonCSV)
 //import axios from 'axios';
@@ -284,9 +284,10 @@ export default {
     }),
 
         computed: {
-        formTitle () {
-            return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-        },
+            formTitle () {
+                return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+            },
+            ...mapGetters(['token'])
         },
 
         watch: {
@@ -328,7 +329,7 @@ export default {
             async setEnable (item) {
                 //this.editedIndex = this.Users.indexOf(item)
                 this.editedItem = Object.assign({}, item)
-                await fetch('http://localhost:3000/api/user/enable',{
+                await fetch(`${this.$url}/api/user/enable`,{
                     method:'PUT',
                     headers: {
                         'Accept': 'application/json',
@@ -345,7 +346,7 @@ export default {
              */
             async setDisable (item) {
                 this.editedItem = Object.assign({}, item)
-                await fetch('http://localhost:3000/api/user/disable',{
+                await fetch(`${this.$url}/api/user/disable`,{
                     method:'PUT',
                     headers: {
                         'Accept': 'application/json',
@@ -359,7 +360,7 @@ export default {
             },
             async setNull (item) {
                 this.editedItem = Object.assign({}, item)
-                await fetch('http://localhost:3000/api/user/null',{
+                await fetch(`${this.$url}/api/user/null`,{
                     method:'PUT',
                     headers: {
                         'Accept': 'application/json',
@@ -391,11 +392,12 @@ export default {
 
             async save () {
                 if (this.editedIndex > -1) {
-                    await fetch(`http://localhost:3000/api/user/update/${this.editedItem.id}`,{
+                    await fetch(`${this.$url}/api/user/update/${this.editedItem.id}`,{
                         method:'PUT',
                         headers: {
                             'Accept': 'application/json',
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            token:this.token
                         },
                         body:JSON.stringify(this.editedItem)
                     })
@@ -404,11 +406,11 @@ export default {
                     this.editedItem.firstName = this.editedItem.firstName.toUpperCase()
                     this.editedItem.lastName = this.editedItem.lastName.toUpperCase()
                     this.editedItem.address = this.editedItem.address.toUpperCase()
-                    await fetch(`http://localhost:3000/api/user/register`,{
+                    await fetch(`${this.$url}/api/user/register`,{
                         method:'POST',
                         headers: {
                             'Accept': 'application/json',
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
                         },
                         body:JSON.stringify(this.editedItem)
                     })
@@ -418,13 +420,25 @@ export default {
                 this.close()
             },
             async userList () {
-                const response = await fetch('http://localhost:3000/api/user/list');
-                const data = await response.json();
-                this.Users = data;
-                console.log(data);
+                try{
+                    const response = await fetch(`${this.$url}/api/user/list`, {
+                        headers:{
+                            token:this.token
+                        }
+                    });
+                    const data = await response.json();
+                    this.Users = data;
+                }catch(err){
+                    console.error('something is wrong!')
+                }
             },
             async setEnableNull () {
-                const response = await fetch('http://localhost:3000/api/user/setAllUserNull',{ method:'PUT'})
+                const response = await fetch(`${this.$url}/api/user/setAllUserNull`,{
+                    method:'PUT',
+                    headers:{
+                        token:this.token
+                    }
+                })
                 await response.json()
                 await this.userList()         
             }

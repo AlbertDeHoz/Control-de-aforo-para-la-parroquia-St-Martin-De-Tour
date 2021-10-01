@@ -1,37 +1,31 @@
 <template>
-  <div >
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HomeForm  msg="Welcome to Your Vue.js App"/>
-  </div>
+
+    <v-app class="div__app">
+    <HomeForm/>
+    </v-app>
 </template>
 
 <script>
 // @ is an alias to /src
 import HomeForm from '@/components/HomeForm.vue'
-import {mapGetters} from 'vuex';
-import {mapActions} from 'vuex';
 
 export default {
   name: 'Home',
+
   components: {
     HomeForm
   },
   computed: {
-    ...mapGetters(
-      ['userId']
-      )
-  },
-  mounted() {
-    //this.KEEP_USERID(null)
+
   },
   methods: {
-    ...mapActions([
-      'KEEP_USERID'
-    ]),
   }
 }
 </script>
-
-<style scoped>
-
+<style>
+.div__app {
+  background: url('../assets/cross.jpg')
+    no-repeat center center fixed !important;
+  background-size: cover;
+}
 </style>

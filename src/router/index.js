@@ -12,14 +12,6 @@ const routes = [
     redirect:'/'
   },
   {
-    path: '/',
-    name: 'Home',
-    component: Home,
-    meta:{
-      registro: false
-    }
-  },
-  {
     path: '/register',
     name: 'Register',
     // route level code-splitting
@@ -38,6 +30,14 @@ const routes = [
       registro: true
     },
   },
+  {
+    path: '/',
+    name: 'Home',
+    component: Home,
+    meta:{
+      registro: false
+    }
+  },
   /**
    * Este es el lado del administrador
    */
@@ -51,17 +51,31 @@ const routes = [
   },
   {
     path: '/admin',
-    name: 'Admin',
-    component: () => import('../views/Auth.vue'),
+    //name: 'Admin',
+    component: () => import('../views/Admin/Admin.vue'),
     meta:{
       registro: false,
       autorizacion: true
     },
     children:[
       {
+        path:'/',
+        name:'Admin',
+        component: () => import("../views/Admin/Home.vue")
+      },
+      {
         path:'userlist',
         name:'UserList',
-        component: () => import('../views/Admin.vue'),
+        component: () => import('../views/Admin/Userlist.vue'),
+        meta:{
+          registro: false,
+          autorizacion: true
+        }
+      },
+      {
+        path:'services',
+        name:'Services',
+        component: () => import('../views/Admin/Services.vue'),
         meta:{
           registro: false,
           autorizacion: true
@@ -75,30 +89,34 @@ const router = new VueRouter({
   mode:'history',
   routes
 })
-router.beforeEach((to,from,next) => {
-  const user = store.state.userId;
+const userExist = () => {
+  try{
+    const {idNumber,idType} = store.state.userId;
+    return (idNumber!=null && idType != null) ? true:false;
+  }catch{
+    return false
+  }
+}
+router.beforeEach((to,from,next) =>{
+  //const user = userExist()
   const registro = to.matched.some(record => record.meta.registro);
-  const autorizacion = to.matched.some(record => record.meta.autorizacion);
-  const role = store.state.role
-  if (autorizacion){
-    if ( role !=="Administrador"){
-      next({path:'/auth'})
+  //const autorizacion = to.matched.some(record => record.meta.autorizacion);
+  //const role = store.state.role;
+  //if (autorizacion){
+  //  if (role !== "Administrador"){
+  //    next({path:'/auth'})
+  //  }else {
+  //    next()
+  //  }
+  //}else{
+    if (registro && !userExist()){
+      next({path:'/'})
     }
-    else {
-      console.log(role)
+    else{
       next()
     }
-  }
-  else {
-    if (!user && registro){
-      next('Home')
-    }else if( user && !registro){
-      next('Question')
-    }else{
-      next()
-    }
-  }
-
+  //}
 })
+
 
 export default router
