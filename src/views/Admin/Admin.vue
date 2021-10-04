@@ -68,7 +68,7 @@
           drawer:false,
           items: [
             { title: 'Home', icon: 'mdi-home',to:'/admin' },
-            { title: 'Personas registradas', icon: 'mdi-account-group-outline',to:'/admin/userlist'},
+            { title: 'Personas registradas', icon: 'mdi-account-group-outline',to:'/admin/users'},
             { title: 'Servicios', icon: 'mdi-application-settings',to:'/admin/services' },
           ],
         }
