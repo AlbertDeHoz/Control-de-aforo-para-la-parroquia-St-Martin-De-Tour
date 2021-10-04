@@ -26,7 +26,7 @@
                 <v-btn
                     text
                     color="deep-purple accent-4"
-                    to="/admin/userlist"
+                    to="/admin/users"
                 >
                     Ir a Usuarios
                 </v-btn>
