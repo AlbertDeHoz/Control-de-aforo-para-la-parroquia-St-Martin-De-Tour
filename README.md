@@ -1,4 +1,5 @@
-# survey-church
+# Software para control de aforo para la parroquia St Martín De Tours
+Esta aplicación web tiene como objetivo llevar un registro de las personas que asisten a los eventos presenciales en la parroquia.
 
 ## Project setup
 ```
