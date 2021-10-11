@@ -10,9 +10,14 @@ npm install
 ```
 npm run build
 ```
+## Casos de Uso
+![Casos de uso](/documentation/casos_de_uso.svg)
 
+## Descripción de la funcionalidad
+
+![Casos de uso](/documentation/registroUsuario-flowchart.svg)
+![Casos de uso](/documentation/manejoServicios-flowchart.svg)
 ## Gestión de la Configuración
 Para este proyecto se utiliza Vue.js para desarrollar la interfaz de usuario. Además se hece uso de vuetify para gestionar los estilos.
-
 ### Node
 Es importante tener instalado Node y npm
