@@ -2,6 +2,7 @@
 Esta aplicación web tiene como objetivo llevar un registro de las personas que asisten a los eventos presenciales en la parroquia. El usuario administrador será capaz de crear los servicios en los cuales las personas se inscriben y gestionar el aforo  del templo. Para poder ser registrado satisfactoriamente el usuario deberá llenar una encuesta para validar si es apto su ingreso.
 
 ## Instalación
+Para instalar la aplicación es necesario tener instalado *node.js* para poder trabajar con los archivos de este repositorio. Este repositorio solamente incluye la interfaz de usuario de la aplicación, si deseas ejecutar el programa por completo en tu máquina local puedes pasarte por el repositorio que contiene el backend, haciendo clic [aquí](https://github.com/AlbertDeHoz/Control-de-aforo-St-Martin-De-Tour-Backend).
 ```
 npm install
 ```
