@@ -12,7 +12,7 @@ Esta vista es para manejar el CRUD de los usuarios en la aplicación
 ### Service
 Esta vista es para manejar el CRUD de los servicios
 
-### Login_register
+### Login
 Esta vista para que el registrador pueda ingresar a la parte administrativa de la aplicación
 
 ### Signin
