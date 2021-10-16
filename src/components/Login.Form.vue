@@ -5,18 +5,22 @@
     </v-card-title>
     <v-form ref="form">
       <v-text-field
-        v-model="model"
-        :counter="max"
-        :rules="rules"
-        label="First name"
-        class="mb-4 px-4"
+        v-model="registrar"
+        type="text"
+        :rules="registrarRules"
+        label="Nombre de usuario"
+        class="px-2"
+        outlined
+        required
       ></v-text-field>
 
       <v-text-field
-        v-model="email"
-        :rules="emailRules"
-        label="E-mail"
-        class="mb-4 px-4"
+        v-model="password"
+        type="password"
+        :rules="passwordRules"
+        label="Contraseña"
+        class="px-2"
+        outlined
         required
       ></v-text-field>
 
@@ -25,6 +29,7 @@
           block
           color="primary"
           depressed
+          @click="submitRegistrar"
         >Ingresar</v-btn>
       </v-card-actions>
     </v-form>
@@ -34,18 +39,20 @@
 <script>
 export default {
   data: () => ({
-    valid: false,
-    firstname: "",
-    lastname: "",
-    nameRules: [
-      (v) => !!v || "Name is required",
-      (v) => v.length <= 10 || "Name must be less than 10 characters",
+    registrar:"",
+    password:"",
+    registrarRules: [
+      (v) => !!v || "Se requiere nombre de usuario",
+      (v) => v.length >= 6 || "Recuerda que el nombre de usuario tiene más de 6 caracteres",
     ],
-    email: "",
-    emailRules: [
-      (v) => !!v || "E-mail is required",
-      (v) => /.+@.+/.test(v) || "E-mail must be valid",
+    passwordRules: [
+      (v) => !!v || "Se requiere contraseña"
     ],
   }),
+  methods:{
+    submitRegistrar () {
+      console.log(this.registrar);
+    }
+  }
 };
 </script>

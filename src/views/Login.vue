@@ -1,8 +1,14 @@
 <template>
   <v-app>
-    <v-container>
-      <v-row no-gutters>
-        <v-col>
+    <v-container class="mt-7">
+      <v-row no-gutters justify="center">
+        <v-col
+        cols="12"
+        sm="8"
+        md="6"
+        lg="4"
+        
+        >
           <login-form />
         </v-col>
       </v-row>
