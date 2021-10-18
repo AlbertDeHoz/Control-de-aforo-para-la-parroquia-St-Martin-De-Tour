@@ -5,7 +5,7 @@
     </v-card-title>
     <v-form ref="form">
       <v-text-field
-        v-model="registrar"
+        v-model="registrar.user"
         type="text"
         :rules="registrarRules"
         label="Nombre de usuario"
@@ -15,7 +15,7 @@
       ></v-text-field>
 
       <v-text-field
-        v-model="password"
+        v-model="registrar.password"
         type="password"
         :rules="passwordRules"
         label="Contraseña"
@@ -29,18 +29,21 @@
           block
           color="primary"
           depressed
-          @click="submitRegistrar"
+          @click="liftingUser()"
         >Ingresar</v-btn>
       </v-card-actions>
     </v-form>
+    <pre>{{this.registrar}}</pre>
   </v-card>
 </template>
 
 <script>
 export default {
   data: () => ({
-    registrar:"",
-    password:"",
+    registrar:{
+      user:'',
+      password:''
+    },
     registrarRules: [
       (v) => !!v || "Se requiere nombre de usuario",
       (v) => v.length >= 6 || "Recuerda que el nombre de usuario tiene más de 6 caracteres",
@@ -50,9 +53,10 @@ export default {
     ],
   }),
   methods:{
-    submitRegistrar () {
-      console.log(this.registrar);
+    liftingUser () {
+      this.$emit('handle_submit-registrar', this.registrar);
     }
+
   }
 };
 </script>
