@@ -9,7 +9,7 @@
         lg="4"
         
         >
-          <login-form />
+          <login-form v-on:handle_submit-registrar="submitRegistrar"/>
         </v-col>
       </v-row>
     </v-container>
@@ -22,5 +22,10 @@ export default {
   components: {
     LoginForm,
   },
+  methods: {
+    submitRegistrar(registrar){
+      console.log(registrar)
+    }
+  }
 };
 </script>
