@@ -1,19 +1,15 @@
 <template>
-
     <v-app class="div__app">
-    <HomeForm/>
+      <div>hello</div>
     </v-app>
 </template>
 
 <script>
-// @ is an alias to /src
-import HomeForm from '@/components/HomeForm.vue'
 
 export default {
   name: 'Home',
 
   components: {
-    HomeForm
   },
   computed: {
 
@@ -22,10 +18,3 @@ export default {
   }
 }
 </script>
-<style>
-.div__app {
-  background: url('../assets/cross.jpg')
-    no-repeat center center fixed !important;
-  background-size: cover;
-}
-</style>

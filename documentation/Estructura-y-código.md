@@ -21,28 +21,9 @@ ArchivoLogin.vue
 En caso de que el componente sea de uso exclusivo por una vista, este tiene que ser nombrado con el nombre de la vista `Capitalise` seguido de un punto y el nombre del componente de igual forma en formato `Capitalise`
 "
 ## Vistas
-Todos estos archivos deben almacenarse en la carpeta `/views`
-### Home
-Esta es la vista principal para los registradores y administradores
-
-### User
-Esta vista es para manejar el CRUD de los usuarios en la aplicación
-
-### Service
-Esta vista es para manejar el CRUD de los servicios
-
-### Login
-Esta vista para que el registrador pueda ingresar a la parte administrativa de la aplicación
-
-### Signin
-Esta vista es para que el usuario pueda validar si está registrado, para que sea redirigido a registro o a las preguntas
-
-### Signup
-Esta vista es sólo si el usuario no está registrado, para que se registre
-
-### Question
-Aparecen las preguntas para saber estado de salud básicos del posible asistente
-
-### Resume
-Presenta el estado del usuario, es decir, en cuantos servicios está registrado, o si no puede entrar
-
+Descripción de las vistas del proyecto
+- **Home:** Vista inicial del usuario logueado.
+- **Login:** Vista para que el usuario pueda ingresar a la aplicación.
+- **Usuarios:** Vista para gestionar usuarios *Solo para usuario **Administrador***
+- **Catequizado:** Vista para gestionar catequizados.
+- **Eps:** Vista para gestionar EPS  *Solo para usuario **Administrador***
