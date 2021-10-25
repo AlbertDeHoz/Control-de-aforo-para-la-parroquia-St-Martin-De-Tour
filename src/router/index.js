@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue"
+import Main from "../views/Main.vue"
 // import store from "../store";
 //import {mapGetters} from 'vuex'
 
@@ -14,9 +14,16 @@ const routes = [
 
   {
     path: "/",
-    name: "Home",
+    name: "Main",
     //component: () => import( "../views/Home.vue" )
-    component: Home
+    component: Main,
+    children:[
+      {
+        path:"/",
+        name: "Home",
+        component: () => import( "../views/Home.vue" )
+      }
+    ],
   },
 
   {

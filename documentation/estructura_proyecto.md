@@ -22,6 +22,7 @@ En caso de que el componente sea de uso exclusivo por una vista, este tiene que 
 "
 ## Vistas
 Descripción de las vistas del proyecto
+- **Main:** Vista de los componentes comunes para los usuarios registrados en la aplicación.
 - **Home:** Vista inicial del usuario logueado.
 - **Login:** Vista para que el usuario pueda ingresar a la aplicación.
 - **Usuarios:** Vista para gestionar usuarios *Solo para usuario **Administrador***
