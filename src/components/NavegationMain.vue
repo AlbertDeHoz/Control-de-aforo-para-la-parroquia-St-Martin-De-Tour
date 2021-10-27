@@ -1,12 +1,11 @@
 <template>
-  <v-sheet height="400" class="overflow-hidden" style="position: relative;">
-    <v-container class="fill-height">
+    <!-- <v-container class="fill-height">
       <v-row align="center" justify="center">
-        <v-btn color="pink" dark @click.stop="drawer = !drawer">
+        <v-btn color="pink">
           Toggle
         </v-btn>
       </v-row>
-    </v-container>
+    </v-container> -->
 
     <v-navigation-drawer v-model="drawer" absolute temporary>
       <v-list-item>
@@ -33,19 +32,20 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-  </v-sheet>
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        drawer: null,
-        items: [
-          { title: 'Home', icon: 'mdi-view-dashboard' },
-          { title: 'About', icon: 'mdi-forum' },
-        ],
-      }
-    },
-  }
+export default {
+  props: {
+    drawer: Boolean,
+  },
+  data() {
+    return {
+      items: [
+        { title: "Home", icon: "mdi-view-dashboard" },
+        { title: "About", icon: "mdi-forum" },
+      ],
+    };
+  },
+};
 </script>
