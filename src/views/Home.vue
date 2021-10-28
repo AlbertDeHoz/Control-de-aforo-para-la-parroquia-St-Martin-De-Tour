@@ -1,6 +1,6 @@
 <template>
     <v-app class="div__app">
-      <div>hello</div>
+      <button></button>
     </v-app>
 </template>
 

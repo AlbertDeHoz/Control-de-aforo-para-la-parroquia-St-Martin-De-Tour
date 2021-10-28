@@ -1,9 +1,8 @@
 <template>
   <v-app>
-    <AppBar/>
-    <NavegationMain v-bind:drawer="drawers"/>
+    <AppBar @lanzar-nav="lanzarNavigationMain()"/>
+    <NavegationMain :drawer="drawers" @transition-end="drawers=false"/>
     <router-view/>
-    <v-btn @click="lanzarNavigationMain()">aqui</v-btn>
   </v-app>
 </template>
 

@@ -11,7 +11,7 @@
 export default {
   methods: {
     cliquearNavIcon() {
-      console.log('hello')
+      this.$emit('lanzar-nav')
     }
   }
 }
