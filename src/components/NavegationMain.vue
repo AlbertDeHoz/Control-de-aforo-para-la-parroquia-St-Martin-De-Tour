@@ -1,18 +1,19 @@
 <template>
-  <v-navigation-drawer :value="drawer" v-on:transitionend="hello()" absolute temporary>
+  <v-navigation-drawer permanent width="300px">
     <v-list-item>
-      <v-list-item-avatar>
-        <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
-      </v-list-item-avatar>
-
       <v-list-item-content>
-        <v-list-item-title>John Leider</v-list-item-title>
+        <v-list-item-title class="text-h6">
+          Application
+        </v-list-item-title>
+        <v-list-item-subtitle>
+          subtext
+        </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
 
     <v-divider></v-divider>
 
-    <v-list dense>
+    <v-list dense nav>
       <v-list-item v-for="item in items" :key="item.title" link>
         <v-list-item-icon>
           <v-icon>{{ item.icon }}</v-icon>
@@ -28,22 +29,27 @@
 
 <script>
 export default {
+  model: {
+    prop: "title",
+    event: "change",
+  },
   props: {
-    drawer: Boolean,
+    // this allows using the `value` prop for a different purpose
+    value: String,
+    // use `title` as the prop which take the place of `value`
+    title: {
+      type: String,
+      default: "Default title",
+    },
   },
   data() {
     return {
-      a: false,
       items: [
         { title: "Home", icon: "mdi-view-dashboard" },
         { title: "About", icon: "mdi-forum" },
       ],
     };
   },
-  methods: {
-    hello() {
-      this.$emit('transition-end')
-    } 
-  }
+  methods: {},
 };
 </script>
