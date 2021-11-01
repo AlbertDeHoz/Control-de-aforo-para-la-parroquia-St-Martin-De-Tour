@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer permanent width="300px">
+  <v-card elevation="0">
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title class="text-h6">
@@ -29,7 +29,7 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
-  </v-navigation-drawer>
+  </v-card>
 </template>
 
 <script>
@@ -58,3 +58,4 @@ export default {
   methods: {},
 };
 </script>
+

@@ -2,10 +2,12 @@
   <v-app>
     <AppBar/>
     <v-row no-gutters class="mx-0 px-0">
-      <v-col cols="2">
-        <NavegationMain />
+      <v-col cols="2" class="nav-menu">
+        <v-navigation-drawer  absolute width="300px">
+          <NavegationMain />
+        </v-navigation-drawer>
       </v-col>
-      <v-col cols="10">
+      <v-col cols="12" md="10">
         <v-container>
           <router-view />
         </v-container>
@@ -33,3 +35,11 @@ export default {
   methods: {},
 };
 </script>
+
+<style scoped>
+@media screen and (max-width: 960px) {
+  .nav-menu {
+    display: none;
+  }
+}
+</style>
