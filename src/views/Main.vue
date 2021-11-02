@@ -3,7 +3,7 @@
     <AppBar/>
     <v-row no-gutters class="mx-0 px-0">
       <v-col cols="2" class="nav-menu">
-        <v-navigation-drawer  absolute width="300px">
+        <v-navigation-drawer permanent width="300px">
           <NavegationMain />
         </v-navigation-drawer>
       </v-col>
