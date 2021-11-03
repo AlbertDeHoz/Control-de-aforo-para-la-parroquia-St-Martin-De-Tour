@@ -9,7 +9,7 @@
         lg="4"
         
         >
-          <login-form v-on:handle_submit-registrar="submitRegistrar"/>
+          <login-form v-on:handle-registrar="submitRegistrar"/>
         </v-col>
       </v-row>
     </v-container>
