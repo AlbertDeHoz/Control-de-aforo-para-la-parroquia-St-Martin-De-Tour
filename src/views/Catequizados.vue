@@ -3,6 +3,8 @@
   :datos="catequizados" 
   :encabezados="encabezados"
   titulo="Catequizados"
+  @handle-agregar="agregarCatequizado"
+  @handle-editar="editarCatequizado"
   ></Tabla>
 </template>
 
@@ -110,5 +112,17 @@ export default {
   components: {
     Tabla,
   },
+  methods: {
+    leerCatequidados() {
+
+    },
+    agregarCatequizado( item )  {
+      console.log(item)
+    },
+    editarCatequizado( item ) {
+      console.log(item)
+    }
+
+  }
 };
 </script>

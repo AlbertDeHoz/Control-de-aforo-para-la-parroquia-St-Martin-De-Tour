@@ -29,7 +29,7 @@
           block
           color="primary"
           depressed
-          @click="emitRegistrar()"
+          @click="liftingUser()"
         >Ingresar</v-btn>
       </v-card-actions>
     </v-form>
@@ -53,8 +53,8 @@ export default {
     ],
   }),
   methods:{
-    emitRegistrar () {
-      this.$emit('handle-registrar', this.registrar);
+    liftingUser () {
+      this.$emit('handle_submit-registrar', this.registrar);
     }
 
   }

@@ -9,6 +9,7 @@ Las vistas deben utilizar formato `Capitalize` e intentar utilizar una sola pala
 Archivo.vue
 ```
 #### Métodos
+Los componentes que lanzan un metodo personalizado tienen que tener la siguiente estructura: `emit<acción>`
 <!-- TODO:metodos, tipo de case general-->
 <!-- TODO:metodos para CRUD-->
 <!-- TODO:eventos recibidos de los componentes-->
