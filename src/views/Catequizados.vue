@@ -7,9 +7,13 @@
       @handle-agregar="agregarCatequizado"
       @handle-editar="editarCatequizado"
     ></Tabla>
-    <v-dialog v-model="dialog" width="600">
+    <v-dialog v-model="dialog" max-width="960" scrollable>
       <v-card>
-        <CardCatequizadoForm/>
+        <v-card-title>Registrar catequizado</v-card-title>
+        <v-divider></v-divider>
+        <v-card-text class="mt-5">
+          <CatequizadoForm />
+        </v-card-text>
       </v-card>
     </v-dialog>
   </v-app>
@@ -17,11 +21,11 @@
 
 <script>
 import Tabla from "../components/Tabla.vue";
-import CardCatequizadoForm from "../components/CardCatequizadoForm.vue"
+import CatequizadoForm from "../components/CatequizadoForm.vue";
 
 export default {
   data: () => ({
-    dialog:false,
+    dialog: false,
     catequizados: [
       {
         name: "Frozen Yogurt",
@@ -120,11 +124,11 @@ export default {
   }),
   components: {
     Tabla,
-    CardCatequizadoForm
+    CatequizadoForm,
   },
   methods: {
     leerCatequidados() {
-    // TODO
+      // TODO
     },
 
     agregarCatequizado() {
