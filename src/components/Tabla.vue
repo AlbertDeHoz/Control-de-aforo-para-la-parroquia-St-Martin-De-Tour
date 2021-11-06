@@ -14,8 +14,8 @@
       <v-btn small @click="emitAgregar()">Agregar nuevo</v-btn>
     </v-card-title>
     <v-data-table :headers="encabezados" :items="datos" :search="search">
-      <template v-slot:[`item.iron`]="{ item }">
-        <v-icon small class="mr-2" @click="emitEditar(item)">
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-icon small class="mr-2" @click="handleEditar(item)">
           mdi-pencil
         </v-icon>
         <v-icon small @click="() => 0">
@@ -48,7 +48,7 @@ export default {
       this.dialog = !this.dialog;
     },
 
-    emitEditar(item) {
+    handleEditar(item) {
       this.$emit('handle-editar',item);
     },
     

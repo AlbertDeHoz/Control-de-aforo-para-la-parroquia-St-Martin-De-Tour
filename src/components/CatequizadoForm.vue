@@ -1,5 +1,5 @@
 <template>
-  <form action="">
+  <form action="" class="mt-2">
     <v-row>
       <v-col cols="12" lg="6" class="pb-0">
         <v-text-field
@@ -7,6 +7,7 @@
           label="Nombres Completos"
           outlined
           required
+          :rules="rules.nombres"
           dense
         ></v-text-field>
       </v-col>
@@ -158,6 +159,9 @@
 
 <script>
 export default {
+  props:{
+    catequizadoEditado:Object
+  },
   data() {
     return {
       catequizado: {
@@ -176,7 +180,21 @@ export default {
         eps_codigo: "",
         es_bautizado: false,
       },
+      rules:{
+        nombres:[
+          v => !!v || 'Name is required',
+          v => v.length <= 10 || 'Name must be less than 10 characters',
+        ],
+
+      }
     };
   },
+
+  mounted(){
+    if (Object.keys(this.catequizadoEditado).length >= 0){
+      this.catequizado = {...this.catequizadoEditado}
+      console.log(this.catequizadoEditado)
+    }
+  }
 };
 </script>
