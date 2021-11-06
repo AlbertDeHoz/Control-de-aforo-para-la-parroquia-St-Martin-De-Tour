@@ -11,11 +11,11 @@
         hide-details
       ></v-text-field>
       <v-spacer></v-spacer>
-      <v-btn small>Agregar nuevo</v-btn>
+      <v-btn small @click="emitAgregar()">Agregar nuevo</v-btn>
     </v-card-title>
     <v-data-table :headers="encabezados" :items="datos" :search="search">
-      <template v-slot:[`item.iron`]="{ item }">
-        <v-icon small class="mr-2" @click="editarCatequizado(item)">
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-icon small class="mr-2" @click="handleEditar(item)">
           mdi-pencil
         </v-icon>
         <v-icon small @click="() => 0">
@@ -23,14 +23,10 @@
         </v-icon>
       </template>
     </v-data-table>
-    <v-dialog v-model="dialog" width="600">
-      <CardCatequizadoForm />
-    </v-dialog>
   </v-card>
 </template>
 
 <script>
-import CardCatequizadoForm from "./CardCatequizadoForm.vue";
 
 export default {
   props: {
@@ -39,9 +35,6 @@ export default {
     datos: Array,
   },
 
-  components: {
-    CardCatequizadoForm,
-  },
 
   data() {
     return {
@@ -55,13 +48,12 @@ export default {
       this.dialog = !this.dialog;
     },
 
-    emitEditar(item) {
-      this.toggleDialog();
+    handleEditar(item) {
       this.$emit('handle-editar',item);
     },
     
     emitAgregar() {
-
+      this.$emit('handle-agregar');
     }
   },
 };
