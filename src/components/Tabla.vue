@@ -11,7 +11,7 @@
         hide-details
       ></v-text-field>
       <v-spacer></v-spacer>
-      <v-btn small @click="emitAgregar()">Agregar nuevo</v-btn>
+      <v-btn small @click="handleAgregar()">Agregar nuevo</v-btn>
     </v-card-title>
     <v-data-table :headers="encabezados" :items="datos" :search="search">
       <template v-slot:[`item.actions`]="{ item }">
@@ -52,7 +52,7 @@ export default {
       this.$emit('handle-editar',item);
     },
     
-    emitAgregar() {
+    handleAgregar() {
       this.$emit('handle-agregar');
     }
   },

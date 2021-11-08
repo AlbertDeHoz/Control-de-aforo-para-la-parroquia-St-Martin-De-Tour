@@ -195,6 +195,11 @@ export default {
       this.catequizado = {...this.catequizadoEditado}
       console.log(this.catequizadoEditado)
     }
+  },
+  methods:{
+    handleSubmit() {
+      this.$emit('handle-submit',this.catequizadoEditado)
+    }
   }
 };
 </script>
