@@ -12,7 +12,7 @@
         <v-card-title>Registrar catequizado</v-card-title>
         <v-divider></v-divider>
         <v-card-text class="mt-5">
-          <CatequizadoForm :catequizadoEditado="catequizadoEditado"/>
+          <CatequizadoForm :catequizadoEditado="catequizadoEditado" @handle-submit="submitCatequizado()"/>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -78,17 +78,45 @@ export default {
     },
 
     agregarCatequizado() {
-      this.dialog = !this.dialog;
-    },
 
-    lanzarCatequizadoForm() {
       this.dialog = true;
     },
+
 
     editarCatequizado(catequizado) {
       this.catequizadoEditado = {...catequizado}
       this.dialog = true;
     },
+
+    submitCatequizado(tipo,catequizado) {
+      if ( tipo==='agregar' )
+        this.agregarCatequizado(catequizado);
+      else if ( tipo==='editar' )
+        this.editarCatequizado(catequizado);
+    },
+
+    lanzarCatequizadoForm(){
+      this.dialog = true;
+    },
+
+    resetCatequizadoEditado() {
+      this.catequizado = {
+        id: "",
+        nombres: "",
+        apellidos: "",
+        identificacion: "",
+        fecha_nacimiento: "",
+        edad: "",
+        direccion: "",
+        colegio: "",
+        telefono_fijo: "",
+        celular: "",
+        grado: "",
+        alergias: "",
+        eps_codigo: "",
+        es_bautizado: false,
+      }
+    }
   },
 };
 </script>
